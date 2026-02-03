@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TuniLearn</title>
+
+<style>
+:root{
+  --bg:#ffffff;        /* خلفية بيضاء */
+  --panel:#e6f0ff;     /* لوحات زرقاء فاتحة */
+  --card:#cce0ff;      /* كارد أزرق أغمق */
+  --text:#001f4d;       /* نص داكن */
+  --muted:#555555;      /* نص فرعي */
+  --accent:#ff0000;     /* البوتونات حمراء */
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);}
+
+/* Navbar */
+.navbar{
+  position:fixed;top:0;width:100%;
+  display:flex;gap:20px;align-items:center;
+  padding:16px 30px;background:var(--panel);z-index:1000;
+}
+.logo{font-weight:900;font-size:24px;color:var(--text);}
+.logo span{color:#0066ff;}
+.search input{
+  flex:1;padding:10px 18px;border-radius:50px;
+  border:none;background:white;color:var(--text);
+}
+.btn{
+  border:none;background:var(--accent);color:white;
+  padding:8px 18px;border-radius:50px;cursor:pointer;
+}
+
+/* Intro */
+.intro-section{
+  padding:140px 30px 40px;
+  text-align:center;max-width:800px;margin:auto;
+}
+.intro-section h1{
+  font-size:36px;color:#0066ff;margin-bottom:12px;
+}
+.intro-section p{color:var(--text);font-size:16px;line-height:1.7;}
+
+/* Grid */
+.container{max-width:1200px;margin:40px auto;padding:0 30px;}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:24px;
+}
+.card{
+  background:var(--card);
+  border-radius:18px;overflow:hidden;
+  transition:.3s;
+}
+.card:hover{transform:translateY(-5px);}
+.card img{width:100%;height:200px;object-fit:cover;}
+.card-body{padding:15px;}
+.card-body h3{font-size:14px;margin-bottom:8px;}
+.card-body a{
+  font-size:13px;color:#0066ff;
+  text-decoration:none;cursor:pointer;
+}
+
+/* Modal */
