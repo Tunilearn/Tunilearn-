@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TuniLearn / 
+Welcome </title>
+<style>
+:root{
+  --bg:#fdf6e3;
+  --panel:#e3d7c1;
+  --card:#ffffff;
+  --text:#000000;
+  --muted:#555555;
+  --btn:#ff0000;
+  --btn-text:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);}
+
+/* Navbar */
+.navbar{
+  position:fixed;top:0;width:100%;
+  display:flex;gap:15px;align-items:center;
+  padding:16px 30px;background:var(--panel);color:var(--text);z-index:1000;
+  border-bottom:2px solid var(--text);
+}
+.logo{font-weight:900;font-size:24px;}
+.logo span{color:#000;}
+.search input{
+  flex:1;padding:10px 18px;border-radius:50px;
+  border:1px solid var(--text);background:white;color:var(--text);
+}
+
+/* Grid */
+.container{max-width:1200px;margin:140px auto;padding:0 30px;}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:24px;
+}
+.card{
+  background:var(--card);
+  border-radius:18px;overflow:hidden;
+  transition:.3s;
+  border:1px solid #ccc;
+}
+.card:hover{transform:translateY(-5px);}
+.card img{width:100%;height:180px;object-fit:cover;}
+.card-body{padding:15px;}
+.card-body h3{font-size:16px;margin-bottom:8px;color:var(--text);}
+.card-body p{font-size:14px;color:var(--muted);}
+.card-body a{
+  display:inline-block;margin-top:8px;padding:6px 12px;
+  background:var(--btn);color:var(--btn-text);border-radius:12px;
+  text-decoration:none;font-weight:bold;
+}
+
+/* Intro */
+.intro-section{
+  padding:100px 30px 40px;
+  text-align:center;max-width:800px;margin:auto;
+  background:var(--panel);border-radius:20px;
+}
+.intro-section h1{
+  font-size:36px;color:var(--text);margin-bottom:12px;
+}
+.intro-section p{color:var(--text);font-size:16px;line-height:1.7;}
+
+/* Footer */
+.footer{
+  margin-top:40px;text-align:center;padding:20px;
+}
+.footer button{
+  background:var(--btn);color:var(--btn-text);border:none;padding:10px 18px;
+  border-radius:25px;margin:5px;cursor:pointer;font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="logo">Tuni<span>Learn</span> / </div>
+  <input id="search" placeholder="Search lessons..." type="text">
+</div>
+
+<!-- Intro -->
+<section class="intro-section">
+  <h1>TuniLearn</h1>
+  <p>مرحبا بيكم في المنصة التونسية لاجتياز الفروض في جميع الشعب من 2 ثانوي الى الرابعة ثانوي
+                 we have 
+_ exams devoirs, summaries.</p>
+</section>
+
+<!-- Grid -->
+<div class="container">
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- Footer Buttons -->
+<div class="footer">
+  <button>Sign In</button>
+  <button>Sign Up</button>
+</div>
+
+<script>
+// Sample lessons
+const lessons=[
+  {title:"رياضيات / Math - الأسبوع 1", desc:"ملخص الدرس", link:"#", img:"https://picsum.photos/600/400?1"},
+  {title:"فيزياء / Physics - الأسبوع 2", desc:"ملخص الدرس", link:"#", img:"https://picsum.photos/600/400?2"},
+  {title:"تاريخ / History - الأسبوع 1", desc:"ملخص الدرس", link:"#", img:"https://picsum.photos/600/400?3"}
+];
+
+// Render grid + search
+const grid=document.getElementById("grid");
+function render(filter=""){
+  grid.innerHTML="";
+  lessons.filter(l=>l.title.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(l=>{
+      grid.innerHTML+=`
+      <div class="card">
+        <img src="${l.img}">
+        <div class="card-body">
+          <h3>${l.title}</h3>
+          <p>${l.desc}</p>
+          <a href="${l.link}" target="_blank">View / Download</a>
+        </div>
+      </div>`;
+    });
+}
+render();
+document.getElementById("search").oninput=e=>render(e.target.value);
+</script>
+
+</body>
+</html>
