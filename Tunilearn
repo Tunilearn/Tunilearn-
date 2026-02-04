@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TuniLearn</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#061a40;
+  font-family:Arial,sans-serif;
+}
+.phone{
+  width:300px;
+  background:#0b2c6d;
+  padding:25px;
+  border-radius:22px;
+  box-shadow:0 0 30px rgba(0,0,0,.5);
+  color:Yellow;
+}
+h1{text-align:center;margin-bottom:10px}
+.tuni{color:black;background:s:6px}
+.dot{color:white}
+.learn{color:white}
+.desc{
+  text-align:center;
+  color:#b0b7d6;
+  font-size:14px;
+  margin-bottom:15px;
+}
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  border:none;
+}
+.buttons{
+  display:flex;
+  justify-content:space-between;
+}
+button
