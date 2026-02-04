@@ -5,57 +5,94 @@
 <title>Learning Space</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#000;color:#1e90ff;}
-header{padding:20px;font-size:18px;color:#1e90ff;font-weight:bold;}
-.search-box{display:flex;margin:0 20px 20px 20px;}
-.search-box input{flex:1;padding:10px;border-radius:12px;border:none;background:#0b2c6d;color:white;font-size:14px;}
-.search-box button{width:50px;background:#1e90ff;color:white;border:none;border-radius:12px;cursor:pointer;font-size:16px;}
-.level{border:1px solid #1e90ff;border-radius:12px;padding:12px;margin:10px 20px;color:#aaa;cursor:pointer;}
-.level h3{margin:0}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#000;
+  color:#1e90ff;
+  min-height:100vh;
+  padding:20px;
+}
+
+h2{text-align:center;margin-bottom:20px}
+
+.search-box{
+  display:flex;
+  margin-bottom:20px;
+}
+
+.search-box input{
+  flex:1;
+  padding:10px;
+  border-radius:12px;
+  border:none;
+  background:#0b2c6d;
+  color:white;
+}
+
+.search-box button{
+  width:50px;
+  background:#1e90ff;
+  border:none;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.level{
+  border:1px solid #1e90ff;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:15px;
+}
+
+.level h3{margin:0 0 8px 0}
+.sublevel{color:#888;font-size:13px;margin-left:10px}
 </style>
 </head>
+
 <body>
-<header>Learning Space</header>
+<h2>Learning Space</h2>
 
 <div class="search-box">
-  <input id="search" placeholder="Search...">
+  <input id="search" placeholder="Search level...">
   <button onclick="searchLevel()">🔍</button>
 </div>
 
 <div id="levels">
-  <div class="level" onclick="openLevel(7)">7 أساسي</div>
-  <div class="level" onclick="openLevel(8)">8 أساسي</div>
-  <div class="level" onclick="openLevel(9)">9 أساسي</div>
-  <div class="level" onclick="openLevel(10)">1 ثانوي</div>
-  <div class="level" onclick="openLevel(11)">2 ثانوي</div>
-  <div class="level" onclick="openLevel(12)">3 ثانوي</div>
-  <div class="level" onclick="openLevel(13)">4 ثانوي</div>
+  <div class="level" onclick="showContent('7th')">
+    <h3>7th Grade</h3>
+    <div class="sublevel">Devoirs • Summaries • Series</div>
+  </div>
+  <div class="level" onclick="showContent('8th')">
+    <h3>8th Grade</h3>
+    <div class="sublevel">Devoirs • Summaries • Series</div>
+  </div>
+  <div class="level" onclick="showContent('9th')">
+    <h3>9th Grade</h3>
+    <div class="sublevel">Devoirs • Summaries • Series</div>
+  </div>
+  <div class="level" onclick="showContent('10th')">
+    <h3>10th Grade</h3>
+    <div class="sublevel">Devoirs • Summaries • Series</div>
+  </div>
+  <div class="level" onclick="showContent('11th')">
+    <h3>11th Grade</h3>
+    <div class="sublevel">Devoirs • Summaries • Series</div>
+  </div>
+  <div class="level" onclick="showContent('12th')">
+    <h3>12th Grade</h3>
+    <div class="sublevel">Devoirs • Summaries • Series</div>
+  </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script>
-firebase.initializeApp({
-  apiKey: "AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
-  authDomain: "tunilearn-e4b8e.firebaseapp.com",
-  projectId: "tunilearn-e4b8e",
-  appId: "1:730477107505:web:eee97b8ef099326b8cf810"
-});
-const auth = firebase.auth();
-
-/* حماية الصفحة */
-auth.onAuthStateChanged(user=>{
-  if(!user) window.location.href = "index.html";
-});
-
-/* البحث */
 function searchLevel(){
   alert("محرك البحث جاهز، المحتوى يتزاد بعد");
 }
 
-/* فتح المستوى */
-function openLevel(level){
-  window.location.href = "level"+level+".html";
+function showContent(level){
+  alert("المحتوى الخاص بالمستوى " + level + " يظهر هنا بعد الإضافة 🚀");
 }
 </script>
 </body>
