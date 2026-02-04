@@ -1,204 +1,199 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>TuniLearn</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#000;
-  color:#1e90ff;
-}
-
-/* ====== AUTH PAGE ====== */
-#authPage{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.phone{
-  width:360px;
-  background:#050b1a;
-  padding:25px;
-  border-radius:22px;
-}
-
-h1{text-align:center;color:white}
-.tuni{background:white;color:black;padding:2px 6px;border-radius:6px}
-.dot{color:white}
-.learn{color:#1e90ff}
-
-p{color:#888;text-align:center;font-size:14px}
-
-input{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:12px;
-  border:none;
-}
-
-.buttons{
-  display:flex;
-  justify-content:space-between;
-}
-
-button{
-  width:48%;
-  padding:12px;
-  border:none;
-  border-radius:14px;
-  background:#e53935;
-  color:white;
-}
-
-.start{
-  width:100%;
-  margin-top:15px;
-  background:#ff1744;
-}
-
-#status{text-align:center;font-size:13px;margin-top:10px}
-
-/* ====== HOME PAGE ====== */
-#homePage{
-  display:none;
-  min-height:100vh;
-  padding:20px;
-}
-
-.search-box{
-  display:flex;
-  margin-bottom:20px;
-}
-
-.search-box input{
-  flex:1;
-  background:#0b2c6d;
-  color:white;
-}
-
-.search-box button{
-  width:60px;
-  background:#1e90ff;
-  color:white;
-}
-
-.section{
-  border:1px solid #1e90ff;
-  padding:15px;
-  border-radius:14px;
-  margin-bottom:15px;
-}
-
-.section h3{margin:0 0 8px 0}
-.small{color:#777;font-size:13px}
-</style>
-</head>
-
-<body>
-
-<!-- ========== AUTH ========== -->
-<div id="authPage">
-  <div class="phone">
-    <h1>
-      <span class="tuni">Tuni</span>
-      <span class="dot">•</span>
-      <span class="learn">Learn</span>
-    </h1>
-
-    <p>
-      مرحبا بيك في المنصة التونسية لاجتياز الفروض<br>
-      Exames, summaries, devoirs, and more
-    </p>
-
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-
-    <div class="buttons">
-      <button onclick="login()">Log in</button>
-      <button onclick="signup()">Sign up</button>
-    </div>
-
-    <button class="start" onclick="start()">Start Discovering</button>
-    <div id="status"></div>
-  </div>
-</div>
-
-<!-- ========== HOME ========== -->
-<div id="homePage">
-  <h2>Home</h2>
-
-  <div class="search-box">
-    <input id="search" placeholder="Search level...">
-    <button onclick="searchLevel()">🔍</button>
-  </div>
-
-  <div id="results">
-    <div class="section">
-      <h3>Level Example</h3>
-      <p class="small">Devoirs • Summaries • Series</p>
-    </div>
-  </div>
-</div>
-
-<script>
-/* Firebase config */
-firebase.initializeApp({
-  apiKey: "AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
-  authDomain: "tunilearn-e4b8e.firebaseapp.com",
-  projectId: "tunilearn-e4b8e",
-  appId: "1:730477107505:web:eee97b8ef099326b8cf810"
-});
-
-const auth = firebase.auth();
-
-/* AUTH */
-function signup(){
-  auth.createUserWithEmailAndPassword(email.value,password.value)
-  .then(()=>status.innerText="✅ Account created")
-  .catch(e=>status.innerText=e.message);
-}
-
-function login(){
-  auth.signInWithEmailAndPassword(email.value,password.value)
-  .then(()=>status.innerText="✅ Logged in")
-  .catch(e=>status.innerText=e.message);
-}
-
-function start(){
-  if(!auth.currentUser){
-    alert("لازم تعمل كونت قبل ✋");
-  }else{
-    showHome();
-  }
-}
-
-/* PAGE SWITCH */
-function showHome(){
-  document.getElementById("authPage").style.display="none";
-  document.getElementById("homePage").style.display="block";
-}
-
-auth.onAuthStateChanged(user=>{
-  if(user) showHome();
-});
-
-/* SEARCH (placeholder) */
-function searchLevel(){
-  alert("محرك البحث جاهز، المحتوى يتزاد بعد");
-}
-</script>
-
-</body>
-</html>
+‎<!DOCTYPE html>
+‎<html lang="en">
+‎<head>
+‎<meta charset="UTF-8">
+‎<title>TuniLearn</title>
+‎<meta name="viewport" content="width=device-width, initial-scale=1.0">
+‎
+‎<!-- Firebase -->
+‎<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+‎<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+‎
+‎<style>
+‎*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+‎
+‎/* ====== AUTH PAGE ====== */
+‎body{background:#000;color:#1e90ff}
+‎#authPage{min-height:100vh;display:flex;justify-content:center;align-items:center}
+‎.phone{width:360px;background:#050b1a;padding:25px;border-radius:22px;color:white}
+‎h1{text-align:center;color:white;margin-bottom:10px}
+‎.tuni{background:white;color:black;padding:2px 6px;border-radius:6px}
+‎.dot{color:white}
+‎.learn{color:#White}
+‎p{color:#888;text-align:center;font-size:14px;margin-bottom:15px}
+‎input{width:100%;padding:12px;margin:8px 0;border-radius:12px;border:none;font-size:14px}
+‎.buttons{display:flex;justify-content:space-between;margin-bottom:15px}
+‎button{width:48%;padding:12px;border:none;border-radius:14px;background:#e53935;color:white;cursor:pointer}
+‎.start{width:100%;background:#ff1744;margin-top:10px}
+‎#status{text-align:center;font-size:13px;margin-top:10px}
+‎
+‎/* ====== HOME PAGE ====== */
+‎#homePage{display:none;min-height:100vh;padding:20px;background:#000;color:#1e90ff}
+‎#homePage h2{text-align:center;margin-bottom:20px}
+‎.search-box{display:flex;margin-bottom:20px}
+‎.search-box input{flex:1;padding:10px;border-radius:12px;border:none;background:#0b2c6d;color:white}
+‎.search-box button{width:50px;background:#1e90ff;color:white;border:none;border-radius:12px;cursor:pointer;font-size:16px}
+‎.levels{display:flex;flex-direction:column;gap:12px}
+‎.level{border:1px solid #1e90ff;padding:12px;border-radius:12px;cursor:pointer}
+‎.level h3{margin:0;color:#1e90ff}
+‎.subsections{margin-top:8px;padding-left:15px}
+‎.subsections div{margin:5px 0;font-size:14px;color:#888;cursor:pointer}
+‎</style>
+‎</head>
+‎
+‎<body>
+‎
+‎<!-- AUTH PAGE -->
+‎<div id="authPage">
+‎  <div class="phone">
+‎    <h1><span class="tuni">Tuni</span><span class="dot">•</span><span class="learn">Learn</span></h1>
+‎    <p>مرحبا بيك في المنصة التونسية لاجتياز الفروض لدينا
+‎<br>Exames, summaries, devoirs, and more</p>
+‎
+‎    <input id="email" type="email" placeholder="Email">
+‎    <input id="password" type="password" placeholder="Password">
+‎
+‎    <div class="buttons">
+‎      <button onclick="login()">Log in</button>
+‎      <button onclick="signup()">Sign up</button>
+‎    </div>
+‎
+‎    <button class="start" onclick="start()">Start Discovering</button>
+‎    <div id="status"></div>
+‎  </div>
+‎</div>
+‎
+‎<!-- HOME PAGE -->
+‎<div id="homePage">
+‎  <h2>Learning Space</h2>
+‎
+‎  <div class="search-box">
+‎    <input id="search" placeholder="Search level...">
+‎    <button onclick="searchLevel()">🔍</button>
+‎  </div>
+‎
+‎  <div class="levels" id="levelsContainer">
+‎    <div class="level" onclick="toggleSubsections(this)">
+‎      <h3>7ème</h3>
+‎      <div class="subsections" style="display:none">
+‎        <div>Devoirs</div>
+‎        <div>Summaries</div>
+‎        <div>Series</div>
+‎      </div>
+‎    </div>
+‎    <div class="level" onclick="toggleSubsections(this)">
+‎      <h3>8ème</h3>
+‎      <div class="subsections" style="display:none">
+‎        <div>Devoirs</div>
+‎        <div>Summaries</div>
+‎        <div>Series</div>
+‎      </div>
+‎    </div>
+‎    <div class="level" onclick="toggleSubsections(this)">
+‎      <h3>9ème</h3>
+‎      <div class="subsections" style="display:none">
+‎        <div>Devoirs</div>
+‎        <div>Summaries</div>
+‎        <div>Series</div>
+‎      </div>
+‎    </div>
+‎    <div class="level" onclick="toggleSubsections(this)">
+‎      <h3>1ère</h3>
+‎      <div class="subsections" style="display:none">
+‎        <div>Devoirs</div>
+‎        <div>Summaries</div>
+‎        <div>Series</div>
+‎      </div>
+‎    </div>
+‎    <div class="level" onclick="toggleSubsections(this)">
+‎      <h3>2ème</h3>
+‎      <div class="subsections" style="display:none">
+‎        <div>Devoirs</div>
+‎        <div>Summaries</div>
+‎        <div>Series</div>
+‎      </div>
+‎    </div>
+‎    <div class="level" onclick="toggleSubsections(this)">
+‎      <h3>3ème</h3>
+‎      <div class="subsections" style="display:none">
+‎        <div>Devoirs</div>
+‎        <div>Summaries</div>
+‎        <div>Series</div>
+‎      </div>
+‎    </div>
+‎    <div class="level" onclick="toggleSubsections(this)">
+‎      <h3>4ème</h3>
+‎      <div class="subsections" style="display:none">
+‎        <div>Devoirs</div>
+‎        <div>Summaries</div>
+‎        <div>Series</div>
+‎      </div>
+‎    </div>
+‎  </div>
+‎</div>
+‎
+‎<script>
+‎/* Firebase config */
+‎firebase.initializeApp({
+‎  apiKey: "AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
+‎  authDomain: "tunilearn-e4b8e.firebaseapp.com",
+‎  projectId: "tunilearn-e4b8e",
+‎  appId: "1:730477107505:web:eee97b8ef099326b8cf810"
+‎});
+‎
+‎const auth = firebase.auth();
+‎
+‎/* AUTH */
+‎function signup(){
+‎  auth.createUserWithEmailAndPassword(email.value,password.value)
+‎  .then(()=>status.innerText="✅ Account created")
+‎  .catch(e=>status.innerText=e.message);
+‎}
+‎
+‎function login(){
+‎  auth.signInWithEmailAndPassword(email.value,password.value)
+‎  .then(()=>status.innerText="✅ Logged in")
+‎  .catch(e=>status.innerText=e.message);
+‎}
+‎
+‎function start(){
+‎  if(!auth.currentUser){
+‎    alert("تسجيل الدخول لازم  📂");
+‎  }else{
+‎    showHome();
+‎  }
+‎}
+‎
+‎/* PAGE SWITCH */
+‎function showHome(){
+‎  document.getElementById("authPage").style.display="none";
+‎  document.getElementById("homePage").style.display="block";
+‎}
+‎
+‎auth.onAuthStateChanged(user=>{
+‎  if(user) showHome();
+‎});
+‎
+‎/* SEARCH */
+‎function searchLevel(){
+‎  const query = document.getElementById("search").value.toLowerCase();
+‎  const levels = document.querySelectorAll(".level h3");
+‎  levels.forEach(l=>{
+‎    if(l.textContent.toLowerCase().includes(query)){
+‎      l.parentElement.scrollIntoView({behavior:"smooth"});
+‎      l.style.background="#1e90ff";
+‎    }else{
+‎      l.style.background="none";
+‎    }
+‎  });
+‎}
+‎
+‎/* Toggle subsections */
+‎function toggleSubsections(level){
+‎  const sub = level.querySelector(".subsections");
+‎  sub.style.display = sub.style.display==="none"?"block":"none";
+‎}
+‎</script>
+‎
+‎</body>
+‎</html>
