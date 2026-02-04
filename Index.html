@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TuniLearn</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#000;
+  color:#1e90ff;
+}
+
+/* AUTH */
+#auth{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.phone{
+  width:360px;
+  background:#050b1a;
+  padding:25px;
+  border-radius:22px;
+}
+
+h1{text-align:center;color:white}
+.tuni{background:white;color:black;padding:2px 6px;border-radius:6px}
+.dot{color:white}
+.learn{color:#1e90ff}
+
+p{
+  color:#999;
+  text-align:center;
+  font-size:16px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  border:none;
+}
+
+.buttons{
+  display:flex;
+  justify-content:space-between;
+}
+
+button{
+  width:48%;
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  background:#e53935;
+  color:white;
+  cursor:pointer;
+}
+
+.start{
+  width:100%;
+  margin-top:15px;
+  background:#ff1744;
+}
+
+#status{
+  text-align:center;
+  font-size:13px;
+  margin-top:10px;
+  color:#ccc;
+}
+
+/* HOME */
+#home{
+  display:none;
+  min-height:100vh;
+  padding:20px;
+}
+
+.search{
+  display:flex;
+  margin-bottom:20px;
+}
+
+.search input{
+  flex:1;
+  background:#0b2c6d;
+  color:white;
+}
+
+.search button{
+  width:55px;
+  background:#1e90ff;
+  color:white;
+  border:none;
+  border-radius:12px;
+  margin-left:8px;
+}
+
+.level{
+  border:1px solid #1e90ff;
+  padding:15px;
+  border-radius:14px;
+  margin-bottom:12px;
+  color:#aaa;
+  cursor:pointer;
+}
+
+/* LEVEL PAGE */
+#levelPage{
+  display:none;
+  padding:20px;
+}
+
+.file{
+  border:1px solid #1e90ff;
+  padding:15px;
+  border-radius:14px;
+  margin-bottom:12px;
+  color:#aaa;
+}
+</style>
+</head>
+
+<body>
+
+<div id="auth">
+  <div class="phone">
+    <h1>
+      <span class="tuni">Tuni</span>
+      <span class="dot">•</span>
+      <span class="learn">Learn</span>
+    </h1>
+
+    <p>
+      مرحبا بيك في المنصة التونسية لاجتياز الفروض<br>
+      Exams • Summaries • Devoirs
+    </p>
+
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <div class="buttons">
+      <button onclick="login()">Log in</button>
+      <button onclick="signup()">Sign up</button>
+    </div>
+
+    <button class="start" onclick="start()">Start Discovering</button>
+    <div id="status"></div>
+  </div>
+</div>
+
+<div id="home">
+  <h2>Learning Space</h2>
+
+  <div class="search">
+    <input placeholder="Search level">
+    <button>🔍</button>
+  </div>
+
+  <div class="level" onclick="openLevel('7 أساسي')">7 أساسي</div>
+  <div class="level" onclick="openLevel('8 أساسي')">8 أساسي</div>
+  <div class="level" onclick="openLevel('9 أساسي')">9 أساسي</div>
+  <div class="level" onclick="openLevel('1 ثانوي')">1 ثانوي</div>
+  <div class="level" onclick="openLevel('2 ثانوي')">2 ثانوي</div>
+  <div class="level" onclick="openLevel('3 ثانوي')">3 ثانوي</div>
+  <div class="level" onclick="openLevel('4 ثانوي')">4 ثانوي</div>
+</div>
+
+<div id="levelPage">
+  <h2 id="levelTitle"></h2>
+  <div class="file">📘 فروض مراقبة</div>
+  <div class="file">📕 فروض تأليفية</div>
+  <div class="file">📗 تلاخيص</div>
+  <button onclick="backHome()" style="background:#e53935">رجوع</button>
+</div>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
+  authDomain: "tunilearn-e4b8e.firebaseapp.com",
+  projectId: "tunilearn-e4b8e",
+  appId: "1:730477107505:web:eee97b8ef099326b8cf810"
+});
+
+const auth = firebase.auth();
+
+function signup(){
+  auth.createUserWithEmailAndPassword(email.value,password.value)
+  .then(goHome)
+  .catch(e=>status.innerText=e.message);
+}
+
+function login(){
+  auth.signInWithEmailAndPassword(email.value,password.value)
+  .then(goHome)
+  .catch(e=>status.innerText=e.message);
+}
+
+function start(){
+  signup();
+}
+
+function goHome(){
+  document.getElementById("auth").style.display="none";
+  document.getElementById("home").style.display="block";
+}
+
+function openLevel(name){
+  home.style.display="none";
+  levelPage.style.display="block";
+  levelTitle.innerText=name;
+}
+
+function backHome(){
+  levelPage.style.display="none";
+  home.style.display="block";
+}
+</script>
+
+</body>
+</html>
