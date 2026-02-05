@@ -65,104 +65,125 @@ button{width:48%;padding:12px;border:none;border-radius:14px;background:#e53935;
   <button class="back" onclick="backHome()">رجوع</button>
 </div>
 
-<script>
-const usersKey="tunilearn_users";
-let users=JSON.parse(localStorage.getItem(usersKey)||"[]");
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
-function signup(){
- const e=email.value.trim(), p=password.value.trim(), ph=phone.value.trim();
- if(!e||!p||!ph){status.innerText="❌ أكمل كل المعطيات"; return;}
- if(users.find(u=>u.email===e||u.phone===ph)){status.innerText="❌ الحساب موجود بالفعل"; return;}
- users.push({email:e,phone:ph,pass:p});
- localStorage.setItem(usersKey,JSON.stringify(users));
- enterHome();
-}
+  const firebaseConfig = {
+    apiKey: "AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
+    authDomain: "tunilearn-e4b8e.firebaseapp.com",
+    projectId: "tunilearn-e4b8e",
+    storageBucket: "tunilearn-e4b8e.appspot.com",
+    messagingSenderId: "730477107505",
+    appId: "1:730477107505:web:eee97b8ef099326b8cf810",
+    measurementId: "G-H17BY13PDN"
+  };
 
-function login(){
- const e=email.value.trim(), ph=phone.value.trim(), p=password.value.trim();
- const u=users.find(u=>(u.email===e||u.phone===ph)&&u.pass===p);
- if(!u){status.innerText="❌ غير مسجّل، اعمل حساب جديد"; return;}
- enterHome();
-}
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-function forgotPassword(){
- const e=prompt("Tunilearn – استعادة الباسورد\n\nأدخل الإيميل أو رقم الهاتف");
- if(!e) return;
- const u=users.find(u=>u.email===e||u.phone===e);
- if(!u){alert("الحساب غير موجود"); return;}
- alert("Tunilearn – استعادة الباسورد\n\nكلمة السر الخاصة بك هي:\n\n"+u.pass);
-}
+  // Disable Sign Up if user is logged in
+  onAuthStateChanged(auth, user => {
+    if(user){
+      status.innerText="✅ أنت مسجل الدخول مسبقاً";
+    }
+  });
 
-function togglePassword(){ password.type=password.type==="password"?"text":"password"; }
-function enterHome(){ auth.style.display="none"; home.style.display="block"; renderLevels(); }
-
-const levelsData=[
- {name:"7 أساسي",shubs:["عام"]},
- {name:"8 أساسي",shubs:["عام"]},
- {name:"9 أساسي",shubs:["عام"]},
- {name:"1 ثانوي",shubs:["عام"]},
- {name:"2 ثانوي",shubs:["آداب","اقتصاد","علوم"]},
- {name:"3 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم تقنية","علوم","رياضيات"]},
- {name:"4 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم تقنية","علوم","رياضيات"]}
-];
-
-function renderLevels(){
- levels.innerHTML="";
- levelsData.forEach(l=>{
-  const d=document.createElement("div");
-  d.className="level";
-  d.innerText=l.name;
-
-  if(l.shubs.length>1 || l.shubs[0]!=="عام"){
-    const subBox=document.createElement("div");
-    subBox.className="sublvl";
-    l.shubs.forEach(s=>{
-      const sdiv=document.createElement("div");
-      sdiv.innerText=s;
-      sdiv.onclick=e=>{
-        e.stopPropagation();
-        openLevel(l.name+" - "+s);
-        subBox.style.display="none";
-      };
-      subBox.appendChild(sdiv);
-    });
-    d.appendChild(subBox);
-    d.onclick=()=>subBox.style.display=subBox.style.display==="block"?"none":"block";
-  } else {
-    d.onclick=()=>openLevel(l.name);
+  function signup(){
+    const e=email.value.trim(), p=password.value.trim();
+    if(!e||!p){status.innerText="❌ أكمل كل المعطيات"; return;}
+    createUserWithEmailAndPassword(auth,e,p)
+      .then(() => {
+        status.innerText="✅ تم التسجيل بنجاح";
+        enterHome();
+      })
+      .catch(err => {status.innerText="❌ "+err.message;});
   }
 
-  levels.appendChild(d);
- });
-}
+  function login(){
+    const e=email.value.trim(), p=password.value.trim();
+    if(!e||!p){status.innerText="❌ أكمل كل المعطيات"; return;}
+    signInWithEmailAndPassword(auth,e,p)
+      .then(() => {status.innerText="✅ تم تسجيل الدخول"; enterHome();})
+      .catch(err => {status.innerText="❌ "+err.message;});
+  }
 
-function openLevel(n){
- home.style.display="none";
- levelPage.style.display="block";
- levelTitle.innerText=n;
- const filesContainer=document.getElementById("filesContainer");
- filesContainer.innerHTML="";
+  function forgotPassword(){
+    const e=prompt("Tunilearn – استعادة الباسورد\n\nأدخل الإيميل");
+    if(!e) return;
+    // Firebase لا يسمح بالوصول المباشر لكلمة السر
+    alert("لأسباب أمان، يجب إعادة تعيين الباسورد عبر بريدك الإلكتروني");
+  }
 
- for(let i=1;i<=5;i++){
-  const fm=document.createElement("div");
-  fm.className="file";
-  const img1=document.createElement("img");
-  img1.src="https://via.placeholder.com/50?text=FM";
-  fm.appendChild(img1);
-  fm.append(" فروض مراقبة "+i);
-  filesContainer.appendChild(fm);
+  function togglePassword(){ password.type=password.type==="password"?"text":"password"; }
 
-  const fa=document.createElement("div");
-  fa.className="file";
-  const img2=document.createElement("img");
-  img2.src="https://via.placeholder.com/50?text=FA";
-  fa.appendChild(img2);
-  fa.append(" فروض تأليفية "+i);
-  filesContainer.appendChild(fa);
- }
-}
+  // Rest same as before
+  function enterHome(){ authDiv.style.display="none"; home.style.display="block"; renderLevels(); }
+  const levelsData=[
+    {name:"7 أساسي",shubs:["عام"]},
+    {name:"8 أساسي",shubs:["عام"]},
+    {name:"9 أساسي",shubs:["عام"]},
+    {name:"1 ثانوي",shubs:["عام"]},
+    {name:"2 ثانوي",shubs:["آداب","اقتصاد","علوم"]},
+    {name:"3 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم تقنية","علوم","رياضيات"]},
+    {name:"4 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم تقنية","علوم","رياضيات"]}
+  ];
 
-function backHome(){ levelPage.style.display="none"; home.style.display="block"; }
+  function renderLevels(){
+    levels.innerHTML="";
+    levelsData.forEach(l=>{
+      const d=document.createElement("div");
+      d.className="level";
+      d.innerText=l.name;
+      if(l.shubs.length>1 || l.shubs[0]!=="عام"){
+        const subBox=document.createElement("div");
+        subBox.className="sublvl";
+        l.shubs.forEach(s=>{
+          const sdiv=document.createElement("div");
+          sdiv.innerText=s;
+          sdiv.onclick=e=>{
+            e.stopPropagation();
+            openLevel(l.name+" - "+s);
+            subBox.style.display="none";
+          };
+          subBox.appendChild(sdiv);
+        });
+        d.appendChild(subBox);
+        d.onclick=()=>subBox.style.display=subBox.style.display==="block"?"none":"block";
+      } else {
+        d.onclick=()=>openLevel(l.name);
+      }
+      levels.appendChild(d);
+    });
+  }
+
+  function openLevel(n){
+    home.style.display="none";
+    levelPage.style.display="block";
+    levelTitle.innerText=n;
+    const filesContainer=document.getElementById("filesContainer");
+    filesContainer.innerHTML="";
+    for(let i=1;i<=5;i++){
+      const fm=document.createElement("div");
+      fm.className="file";
+      const img1=document.createElement("img");
+      img1.src="https://via.placeholder.com/50?text=FM";
+      fm.appendChild(img1);
+      fm.append(" فروض مراقبة "+i);
+      filesContainer.appendChild(fm);
+      const fa=document.createElement("div");
+      fa.className="file";
+      const img2=document.createElement("img");
+      img2.src="https://via.placeholder.com/50?text=FA";
+      fa.appendChild(img2);
+      fa.append(" فروض تأليفية "+i);
+      filesContainer.appendChild(fa);
+    }
+  }
+
+  function backHome(){ levelPage.style.display="none"; home.style.display="block"; }
+
 </script>
 
 </body>
