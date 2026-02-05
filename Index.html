@@ -4,181 +4,171 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TuniLearn</title>
+
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:'Arial',sans-serif;
-  background:#111;
-  color:#1e90ff;
+body{margin:0;font-family:Arial;background:#111;color:#1e90ff}
+
+/* AUTH */
+#auth{min-height:100vh;display:flex;justify-content:center;align-items:center}
+.phone{width:360px;background:#1a1a1a;padding:25px;border-radius:22px}
+h1{text-align:center;color:white}
+.dot{color:red}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  border:none;
 }
-#auth{min-height:100vh;display:flex;justify-content:center;align-items:center;}
-.phone{width:360px;background:#1a1a1a;padding:25px;border-radius:22px;box-shadow:0 0 10px rgba(0,0,0,0.5);}
-h1{text-align:center;color:white;font-family:'Verdana',sans-serif;}
-.tuni{color:white;font-weight:bold} .dot{color:red} .learn{color:white}
-p{color:#aaa;text-align:center;font-size:16px;}
-input{width:100%;padding:12px;margin:8px 0;border-radius:12px;border:none;}
-.buttons{display:flex;justify-content:space-between;}
-button{width:48%;padding:12px;border:none;border-radius:14px;background:#e53935;color:white;cursor:pointer;font-weight:bold;}
-.start{width:100%;margin-top:15px;background:#ff1744;}
-#forgot{width:50%;margin:5px auto 0 auto;display:block;font-size:12px;background:#2196f3;border:none;color:white;padding:5px;border-radius:8px;cursor:pointer;font-weight:bold;}
-#showPass{width:100%;margin-top:10px;background:#ffa500;border:none;color:white;padding:10px;border-radius:12px;cursor:pointer;font-weight:bold;}
-#status{color:#ff5252;text-align:center;margin-top:10px;font-weight:bold}
+
+/* PASSWORD */
+.pass-box{position:relative}
+#showPass{
+  position:absolute;
+  bottom:-18px;
+  right:10px;
+  background:#444;
+  color:white;
+  border:none;
+  padding:2px 6px;
+  font-size:10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+/* BUTTONS */
+.buttons{display:flex;justify-content:space-between;margin-top:25px}
+button{
+  width:48%;
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  background:#e53935;
+  color:white;
+  font-weight:bold;
+}
+
+#forgot{
+  width:100%;
+  margin-top:10px;
+  background:#1e90ff;
+  padding:8px;
+  border-radius:10px;
+}
+
+#status{color:#ff5252;text-align:center;margin-top:8px}
 
 /* HOME */
-#home{display:none;padding:20px;}
-.home-title{color:white;font-size:18px;margin-bottom:15px;font-family:'Tahoma',sans-serif;text-align:left;}
-.banner{border:2px solid #1e90ff;color:black;background:#87cefa;padding:14px;border-radius:14px;text-align:center;margin-bottom:20px;font-weight:bold;font-size:18px;}
-.level-container{display:flex;flex-direction:column;gap:8px;}
-.level{border:1px solid #1e90ff;padding:12px;border-radius:10px;color:#ccc;cursor:pointer;font-size:16px;text-align:right;background:#222;transition:0.2s;position:relative;display:flex;justify-content:space-between;align-items:center;}
-.level:hover{background:#1e90ff;color:#111;}
-.sublvl-dropdown{display:none;position:absolute;top:105%;right:0;background:#222;border:1px solid #1e90ff;border-radius:8px;min-width:120px;z-index:1000;flex-direction:column;font-size:13px;}
-.sublvl-dropdown div{padding:6px 10px;color:#ccc;cursor:pointer;text-align:right;}
-.sublvl-dropdown div:hover{background:#1e90ff;color:#111;}
+#home{display:none;padding:20px}
+.banner{
+  border:1px solid white;
+  color:#e53935;
+  padding:12px;
+  border-radius:12px;
+  text-align:center;
+  font-weight:bold;
+}
 
-/* LEVEL PAGE */
-#levelPage{display:none;padding:20px;position:relative;}
-.file{border:1px solid #1e90ff;padding:6px;border-radius:8px;margin-bottom:5px;color:#ccc;pointer-events:none;font-size:12px;margin-top:4px;}
-.back{background:none;color:white;border:2px solid #006400;padding:8px;border-radius:10px;width:100px;cursor:pointer;font-weight:bold;margin-top:15px;}
+.level{
+  margin-top:12px;
+  border:1px solid #1e90ff;
+  padding:12px;
+  border-radius:10px;
+  background:#222;
+  color:white;
+  cursor:pointer;
+}
 </style>
 </head>
+
 <body>
 
 <!-- AUTH -->
 <div id="auth">
   <div class="phone">
-    <h1><span class="tuni">Tuni</span><span class="dot">•</span><span class="learn">Learn</span></h1>
-    <p>مرحبا بيك في المنصة التونسية لاجتياز الفروض<br>Exams • Summaries • Devoirs</p>
-    <input id="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
+    <h1>Tuni<span class="dot">•</span>Learn</h1>
+
+    <input id="email" type="email" placeholder="Email">
+
+    <div class="pass-box">
+      <input id="password" type="password" placeholder="Password">
+      <button id="showPass" onclick="togglePassword()">👁</button>
+    </div>
+
     <div class="buttons">
       <button onclick="signup()">Sign up</button>
       <button onclick="login()">Log in</button>
     </div>
-    <button id="forgot" onclick="forgotPassword()">Forgot Password</button>
-    <button id="showPass" onclick="togglePassword()">Show Password</button>
-    <button class="start" onclick="start()">Start Discovering</button>
+
+    <button id="forgot" onclick="forgotPassword()">نسيت كلمة المرور</button>
     <div id="status"></div>
   </div>
 </div>
 
 <!-- HOME -->
 <div id="home">
-  <div class="home-title">Learning Space</div>
-  <div class="banner">All exams and summaries you need</div>
-  <div class="level-container" id="levelContainer"></div>
+  <div class="banner">All exams that you need</div>
+
+  <div class="level">2 ثانوي آداب</div>
+  <div class="level">3 ثانوي علوم</div>
+  <div class="level">4 ثانوي رياضيات</div>
 </div>
 
-<!-- LEVEL PAGE -->
-<div id="levelPage">
-  <h2 id="levelTitle" style="color:white;margin-left:10px;"></h2>
-  <div class="file">📘 فروض مراقبة</div>
-  <div class="file">📕 فروض تأليفية</div>
-  <div class="file">📗 تلاخيص</div>
-  <button class="back" onclick="backHome()">Back / رجوع</button>
-</div>
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script>
-const auth=document.getElementById("auth");
-const home=document.getElementById("home");
-const levelContainer=document.getElementById("levelContainer");
-const levelPage=document.getElementById("levelPage");
-const levelTitle=document.getElementById("levelTitle");
-const status=document.getElementById("status");
-const emailInput=document.getElementById("email");
-const passInput=document.getElementById("password");
+const firebaseConfig = {
+  apiKey: "AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
+  authDomain: "tunilearn-e4b8e.firebaseapp.com",
+  projectId: "tunilearn-e4b8e",
+  storageBucket: "tunilearn-e4b8e.firebasestorage.app",
+  messagingSenderId: "730477107505",
+  appId: "1:730477107505:web:eee97b8ef099326b8cf810"
+};
 
-/* LEVELS */
-const levels=[
-  {name:"7 أساسي"},
-  {name:"8 أساسي"},
-  {name:"9 أساسي"},
-  {name:"1 ثانوي"},
-  {name:"2 ثانوي", shubs:["آداب","اقتصاد وتصرف","علوم إعلامية","علوم"]},
-  {name:"3 ثانوي", shubs:["آداب","اقتصاد وتصرف","علوم إعلامية","علوم تقنية","علوم","رياضيات"]},
-  {name:"4 ثانوي", shubs:["آداب","اقتصاد وتصرف","علوم إعلامية","علوم تقنية","علوم","رياضيات"]}
-];
+firebase.initializeApp(firebaseConfig);
+const authFirebase = firebase.auth();
 
-/* AUTH */
+/* AUTH STATE */
+authFirebase.onAuthStateChanged(user=>{
+  if(user){
+    auth.style.display="none";
+    home.style.display="block";
+  }else{
+    auth.style.display="flex";
+    home.style.display="none";
+  }
+});
+
+/* FUNCTIONS */
 function signup(){
-  const emailVal=emailInput.value.trim();
-  const passVal=passInput.value.trim();
-  if(!emailVal||!passVal){status.innerText="❌ Fill all fields";return;}
-  localStorage.setItem("userEmail", emailVal);
-  localStorage.setItem("userPass", passVal);
-  auth.style.display="none";
-  renderLevels();
-  home.style.display="block";
+  authFirebase.createUserWithEmailAndPassword(email.value,password.value)
+  .catch(e=>status.innerText=e.message);
 }
 
 function login(){
-  const emailVal=emailInput.value.trim();
-  const passVal=passInput.value.trim();
-  if(emailVal===localStorage.getItem("userEmail")&&passVal===localStorage.getItem("userPass")){
-    auth.style.display="none";
-    renderLevels();
-    home.style.display="block";
-  } else {status.innerText="❌ Wrong email or password";}
-}
-
-function start(){
-  auth.style.display="none";
-  renderLevels();
-  home.style.display="block";
+  authFirebase.signInWithEmailAndPassword(email.value,password.value)
+  .catch(()=>status.innerText="❌ معلومات خاطئة");
 }
 
 function forgotPassword(){
-  const email=prompt("Enter your registered email:");
-  if(email===localStorage.getItem("userEmail")){
-    const code=Math.floor(Math.random()*900000)+100000;
-    alert("Your reset code is: " + code);
-  } else {alert("Email not found!");}
+  if(!email.value){
+    status.innerText="اكتب الإيميل أولا";
+    return;
+  }
+  authFirebase.sendPasswordResetEmail(email.value)
+  .then(()=>alert("📧 ستتلقى إيميل لتأكيد ملكيتك ثم إعادة تعيين كلمة السر"))
+  .catch(e=>status.innerText=e.message);
 }
 
-function togglePassword(){passInput.type = passInput.type==="password"?"text":"password";}
-
-/* RENDER LEVELS */
-function renderLevels(){
-  levelContainer.innerHTML="";
-  levels.forEach(l=>{
-    const div=document.createElement("div");
-    div.className="level";
-    div.innerText=l.name;
-
-    if(l.shubs){
-      const dropdown=document.createElement("div");
-      dropdown.className="sublvl-dropdown";
-      dropdown.style.display="none";
-      l.shubs.forEach(s=>{
-        const sub=document.createElement("div");
-        sub.innerText=s;
-        sub.onclick=(e)=>{
-          e.stopPropagation();
-          openLevel(`${l.name} ${s}`);
-          dropdown.style.display="none";
-        };
-        dropdown.appendChild(sub);
-      });
-      div.appendChild(dropdown);
-      div.style.position="relative";
-      div.onclick=()=>{dropdown.style.display=dropdown.style.display==="flex"?"none":"flex";}
-    } else div.onclick=()=>openLevel(l.name);
-
-    levelContainer.appendChild(div);
-  });
+function togglePassword(){
+  password.type=password.type==="password"?"text":"password";
 }
-
-function openLevel(name){
-  home.style.display="none";
-  levelPage.style.display="block";
-  levelTitle.innerText=name;
-}
-
-function backHome(){levelPage.style.display="none";home.style.display="block";}
-
-// Force login every time
-auth.style.display="flex"; 
-home.style.display="none";
 </script>
+
 </body>
 </html>
