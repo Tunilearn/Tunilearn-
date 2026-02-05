@@ -7,23 +7,39 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#111;color:#1e90ff}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#111;
+  color:#1e90ff;
+}
 
 /* AUTH */
-#auth{min-height:100vh;display:flex;justify-content:center;align-items:center}
-.phone{width:360px;background:#1a1a1a;padding:25px;border-radius:22px}
+#auth{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.phone{
+  width:360px;
+  background:#1a1a1a;
+  padding:25px;
+  border-radius:22px;
+}
 h1{text-align:center;color:white}
 .dot{color:red}
-p{text-align:center;color:#aaa;font-size:14px}
+p{color:#aaa;text-align:center;font-size:15px}
 
 input{
   width:100%;
   padding:12px;
-  margin:6px 0;
+  margin:8px 0;
   border-radius:12px;
   border:none;
 }
 
+/* SHOW PASSWORD */
 #showPass{
   width:100%;
   background:#333;
@@ -36,7 +52,11 @@ input{
   cursor:pointer;
 }
 
-.buttons{display:flex;justify-content:space-between}
+/* BUTTONS */
+.buttons{
+  display:flex;
+  justify-content:space-between;
+}
 button{
   width:48%;
   padding:12px;
@@ -44,13 +64,13 @@ button{
   border-radius:14px;
   background:#e53935;
   color:white;
-  font-weight:bold;
   cursor:pointer;
+  font-weight:bold;
 }
 
 #forgot{
-  width:70%;
-  margin:8px auto;
+  width:60%;
+  margin:6px auto;
   display:block;
   font-size:12px;
   background:#2196f3;
@@ -58,37 +78,98 @@ button{
   border-radius:8px;
 }
 
-#status{color:#ff5252;text-align:center;margin-top:8px;font-weight:bold}
+#status{
+  color:#ff5252;
+  text-align:center;
+  margin-top:10px;
+  font-weight:bold;
+}
 
 /* HOME */
 #home{display:none;padding:20px}
-.banner{background:#87cefa;color:black;padding:12px;border-radius:12px;text-align:center;font-weight:bold}
+.home-title{color:white;font-size:18px;margin-bottom:10px}
+.banner{
+  border:2px solid #1e90ff;
+  background:#87cefa;
+  color:black;
+  padding:12px;
+  border-radius:14px;
+  text-align:center;
+  font-weight:bold;
+}
 
-.level{margin-top:10px;border:1px solid #1e90ff;padding:12px;border-radius:10px;background:#222;color:#ccc;cursor:pointer;position:relative}
+.level-container{
+  margin-top:15px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
 
-.sublvl{display:none;position:absolute;top:100%;right:0;background:#222;border:1px solid #1e90ff;border-radius:8px;width:160px;z-index:10}
-.sublvl div{padding:6px 10px;color:white;cursor:pointer}
+.level{
+  border:1px solid #1e90ff;
+  padding:12px;
+  border-radius:10px;
+  background:#222;
+  color:#ccc;
+  cursor:pointer;
+  position:relative;
+}
+
+.sublvl-dropdown{
+  display:none;
+  position:absolute;
+  top:100%;
+  right:0;
+  background:#222;
+  border:1px solid #1e90ff;
+  border-radius:8px;
+  width:160px;
+  z-index:10;
+}
+
+.sublvl-dropdown div{
+  padding:6px 10px;
+  cursor:pointer;
+  color:white;
+}
+
+.sublvl-dropdown div:hover{
+  background:#1e90ff;
+  color:#111;
+}
 
 /* LEVEL PAGE */
 #levelPage{display:none;padding:20px}
-.file{border:1px solid #1e90ff;padding:8px;border-radius:8px;margin-top:6px}
-
-/* JS */
+.file{
+  border:1px solid #1e90ff;
+  padding:8px;
+  border-radius:8px;
+  margin:6px 0;
+  color:#ccc;
+}
+.back{
+  margin-top:15px;
+  border:2px solid green;
+  background:none;
+  color:white;
+  padding:8px;
+  border-radius:10px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- AUTH -->
 <div id="auth">
   <div class="phone">
     <h1>Tuni<span class="dot">•</span>Learn</h1>
     <p>منصة تونسية للفروض والاختبارات</p>
 
     <input id="email" placeholder="Email">
-    <input id="phone" placeholder="Phone number">
     <input id="password" type="password" placeholder="Password">
 
-    <button id="showPass" onclick="togglePassword()">Password visibility</button>
+    <button id="showPass" onclick="togglePassword()">Show password</button>
 
     <div class="buttons">
       <button onclick="signup()">Sign up</button>
@@ -100,98 +181,96 @@ button{
   </div>
 </div>
 
+<!-- HOME -->
 <div id="home">
+  <div class="home-title">Learning Space</div>
   <div class="banner">All exams that you need</div>
-  <div id="levels"></div>
+  <div class="level-container" id="levelContainer"></div>
 </div>
 
+<!-- LEVEL PAGE -->
 <div id="levelPage">
   <h2 id="levelTitle" style="color:white"></h2>
   <div class="file">فروض مراقبة</div>
   <div class="file">فروض تأليفية</div>
+  <button class="back" onclick="backHome()">Back / رجوع</button>
 </div>
 
 <script>
-const usersKey="tunilearn_users";
-let users=JSON.parse(localStorage.getItem(usersKey)||"[]");
+const auth=document.getElementById("auth");
+const home=document.getElementById("home");
+const levelContainer=document.getElementById("levelContainer");
+const levelPage=document.getElementById("levelPage");
+const levelTitle=document.getElementById("levelTitle");
+const status=document.getElementById("status");
+
+const levels=[
+ {name:"7 أساسي"},
+ {name:"8 أساسي"},
+ {name:"9 أساسي"},
+ {name:"1 ثانوي"},
+ {name:"2 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم"]},
+ {name:"3 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم تقنية","علوم","رياضيات"]},
+ {name:"4 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم تقنية","علوم","رياضيات"]}
+];
 
 function signup(){
- const e=email.value.trim();
- const p=password.value.trim();
- const ph=phone.value.trim();
-
- if(!e||!p||!ph){
-  status.innerText="❌ أكمل كل المعطيات";
-  return;
+ if(!email.value||!password.value){
+  status.innerText="❌ أكمل المعطيات";return;
  }
-
- if(users.find(u=>u.email===e||u.phone===ph)){
-  status.innerText="❌ الحساب موجود بالفعل";
-  return;
- }
-
- users.push({email:e,phone:ph,pass:p});
- localStorage.setItem(usersKey,JSON.stringify(users));
- enterHome();
+ localStorage.setItem("email",email.value);
+ localStorage.setItem("pass",password.value);
+ auth.style.display="none";
+ home.style.display="block";
+ renderLevels();
 }
 
 function login(){
- const e=email.value.trim();
- const ph=phone.value.trim();
- const p=password.value.trim();
-
- const u=users.find(u=>
-   (u.email===e||u.phone===ph)&&u.pass===p
- );
-
- if(!u){
-  status.innerText="❌ غير مسجّل، اعمل حساب جديد";
-  return;
- }
- enterHome();
+ if(email.value===localStorage.getItem("email") &&
+    password.value===localStorage.getItem("pass")){
+  auth.style.display="none";
+  home.style.display="block";
+  renderLevels();
+ } else status.innerText="❌ معلومات خاطئة";
 }
 
 function forgotPassword(){
- const e=prompt("Tunilearn – استعادة الباسورد\n\nأدخل الإيميل أو رقم الهاتف");
-
- if(!e) return;
-
- const u=users.find(u=>u.email===e||u.phone===e);
-
- if(!u){
-  alert("الحساب غير موجود");
-  return;
- }
-
- alert(
-  "Tunilearn – استعادة الباسورد\n\n"+
-  "كلمة السر الخاصة بك هي:\n\n"+u.pass
- );
+ const e=prompt("أدخل الإيميل:");
+ if(e===localStorage.getItem("email")){
+  alert("كلمة السر: "+localStorage.getItem("pass"));
+ } else alert("الإيميل غير موجود");
 }
 
 function togglePassword(){
  password.type=password.type==="password"?"text":"password";
 }
 
-function enterHome(){
- auth.style.display="none";
- home.style.display="block";
- renderLevels();
-}
-
-const levelsData=[
- "7 أساسي","8 أساسي","9 أساسي","1 ثانوي",
- "2 ثانوي","3 ثانوي","4 ثانوي"
-];
-
 function renderLevels(){
- levels.innerHTML="";
- levelsData.forEach(l=>{
+ levelContainer.innerHTML="";
+ levels.forEach(l=>{
   const d=document.createElement("div");
   d.className="level";
-  d.innerText=l;
-  d.onclick=()=>openLevel(l);
-  levels.appendChild(d);
+  d.innerText=l.name;
+
+  if(l.shubs){
+    const box=document.createElement("div");
+    box.className="sublvl-dropdown";
+    l.shubs.forEach(s=>{
+      const sub=document.createElement("div");
+      sub.innerText=s;
+      sub.onclick=e=>{
+        e.stopPropagation();
+        openLevel(l.name+" "+s);
+        box.style.display="none";
+      };
+      box.appendChild(sub);
+    });
+    d.appendChild(box);
+    d.onclick=()=>box.style.display=
+      box.style.display==="block"?"none":"block";
+  } else d.onclick=()=>openLevel(l.name);
+
+  levelContainer.appendChild(d);
  });
 }
 
@@ -199,6 +278,10 @@ function openLevel(n){
  home.style.display="none";
  levelPage.style.display="block";
  levelTitle.innerText=n;
+}
+function backHome(){
+ levelPage.style.display="none";
+ home.style.display="block";
 }
 </script>
 
