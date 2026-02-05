@@ -14,32 +14,29 @@ body{margin:0;font-family:Arial;background:#111;color:#1e90ff}
 .phone{width:360px;background:#1a1a1a;padding:25px;border-radius:22px}
 h1{text-align:center;color:white}
 .dot{color:red}
+p{text-align:center;color:#aaa;font-size:14px}
 
 input{
   width:100%;
   padding:12px;
-  margin:8px 0;
+  margin:6px 0;
   border-radius:12px;
   border:none;
 }
 
-/* PASSWORD */
-.pass-box{position:relative}
 #showPass{
-  position:absolute;
-  bottom:-18px;
-  right:10px;
-  background:#444;
+  width:100%;
+  background:#333;
   color:white;
   border:none;
-  padding:2px 6px;
   font-size:10px;
-  border-radius:6px;
+  padding:4px;
+  border-radius:999px;
+  margin-bottom:10px;
   cursor:pointer;
 }
 
-/* BUTTONS */
-.buttons{display:flex;justify-content:space-between;margin-top:25px}
+.buttons{display:flex;justify-content:space-between}
 button{
   width:48%;
   padding:12px;
@@ -48,125 +45,160 @@ button{
   background:#e53935;
   color:white;
   font-weight:bold;
+  cursor:pointer;
 }
 
 #forgot{
-  width:100%;
-  margin-top:10px;
-  background:#1e90ff;
-  padding:8px;
-  border-radius:10px;
+  width:70%;
+  margin:8px auto;
+  display:block;
+  font-size:12px;
+  background:#2196f3;
+  padding:6px;
+  border-radius:8px;
 }
 
-#status{color:#ff5252;text-align:center;margin-top:8px}
+#status{color:#ff5252;text-align:center;margin-top:8px;font-weight:bold}
 
 /* HOME */
 #home{display:none;padding:20px}
-.banner{
-  border:1px solid white;
-  color:#e53935;
-  padding:12px;
-  border-radius:12px;
-  text-align:center;
-  font-weight:bold;
-}
+.banner{background:#87cefa;color:black;padding:12px;border-radius:12px;text-align:center;font-weight:bold}
 
-.level{
-  margin-top:12px;
-  border:1px solid #1e90ff;
-  padding:12px;
-  border-radius:10px;
-  background:#222;
-  color:white;
-  cursor:pointer;
-}
+.level{margin-top:10px;border:1px solid #1e90ff;padding:12px;border-radius:10px;background:#222;color:#ccc;cursor:pointer;position:relative}
+
+.sublvl{display:none;position:absolute;top:100%;right:0;background:#222;border:1px solid #1e90ff;border-radius:8px;width:160px;z-index:10}
+.sublvl div{padding:6px 10px;color:white;cursor:pointer}
+
+/* LEVEL PAGE */
+#levelPage{display:none;padding:20px}
+.file{border:1px solid #1e90ff;padding:8px;border-radius:8px;margin-top:6px}
+
+/* JS */
 </style>
 </head>
 
 <body>
 
-<!-- AUTH -->
 <div id="auth">
   <div class="phone">
     <h1>Tuni<span class="dot">•</span>Learn</h1>
+    <p>منصة تونسية للفروض والاختبارات</p>
 
-    <input id="email" type="email" placeholder="Email">
+    <input id="email" placeholder="Email">
+    <input id="phone" placeholder="Phone number">
+    <input id="password" type="password" placeholder="Password">
 
-    <div class="pass-box">
-      <input id="password" type="password" placeholder="Password">
-      <button id="showPass" onclick="togglePassword()">👁</button>
-    </div>
+    <button id="showPass" onclick="togglePassword()">Password visibility</button>
 
     <div class="buttons">
       <button onclick="signup()">Sign up</button>
       <button onclick="login()">Log in</button>
     </div>
 
-    <button id="forgot" onclick="forgotPassword()">نسيت كلمة المرور</button>
+    <button id="forgot" onclick="forgotPassword()">Forgot password</button>
     <div id="status"></div>
   </div>
 </div>
 
-<!-- HOME -->
 <div id="home">
   <div class="banner">All exams that you need</div>
-
-  <div class="level">2 ثانوي آداب</div>
-  <div class="level">3 ثانوي علوم</div>
-  <div class="level">4 ثانوي رياضيات</div>
+  <div id="levels"></div>
 </div>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<div id="levelPage">
+  <h2 id="levelTitle" style="color:white"></h2>
+  <div class="file">فروض مراقبة</div>
+  <div class="file">فروض تأليفية</div>
+</div>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
-  authDomain: "tunilearn-e4b8e.firebaseapp.com",
-  projectId: "tunilearn-e4b8e",
-  storageBucket: "tunilearn-e4b8e.firebasestorage.app",
-  messagingSenderId: "730477107505",
-  appId: "1:730477107505:web:eee97b8ef099326b8cf810"
-};
+const usersKey="tunilearn_users";
+let users=JSON.parse(localStorage.getItem(usersKey)||"[]");
 
-firebase.initializeApp(firebaseConfig);
-const authFirebase = firebase.auth();
-
-/* AUTH STATE */
-authFirebase.onAuthStateChanged(user=>{
-  if(user){
-    auth.style.display="none";
-    home.style.display="block";
-  }else{
-    auth.style.display="flex";
-    home.style.display="none";
-  }
-});
-
-/* FUNCTIONS */
 function signup(){
-  authFirebase.createUserWithEmailAndPassword(email.value,password.value)
-  .catch(e=>status.innerText=e.message);
+ const e=email.value.trim();
+ const p=password.value.trim();
+ const ph=phone.value.trim();
+
+ if(!e||!p||!ph){
+  status.innerText="❌ أكمل كل المعطيات";
+  return;
+ }
+
+ if(users.find(u=>u.email===e||u.phone===ph)){
+  status.innerText="❌ الحساب موجود بالفعل";
+  return;
+ }
+
+ users.push({email:e,phone:ph,pass:p});
+ localStorage.setItem(usersKey,JSON.stringify(users));
+ enterHome();
 }
 
 function login(){
-  authFirebase.signInWithEmailAndPassword(email.value,password.value)
-  .catch(()=>status.innerText="❌ معلومات خاطئة");
+ const e=email.value.trim();
+ const ph=phone.value.trim();
+ const p=password.value.trim();
+
+ const u=users.find(u=>
+   (u.email===e||u.phone===ph)&&u.pass===p
+ );
+
+ if(!u){
+  status.innerText="❌ غير مسجّل، اعمل حساب جديد";
+  return;
+ }
+ enterHome();
 }
 
 function forgotPassword(){
-  if(!email.value){
-    status.innerText="اكتب الإيميل أولا";
-    return;
-  }
-  authFirebase.sendPasswordResetEmail(email.value)
-  .then(()=>alert("📧 ستتلقى إيميل لتأكيد ملكيتك ثم إعادة تعيين كلمة السر"))
-  .catch(e=>status.innerText=e.message);
+ const e=prompt("Tunilearn – استعادة الباسورد\n\nأدخل الإيميل أو رقم الهاتف");
+
+ if(!e) return;
+
+ const u=users.find(u=>u.email===e||u.phone===e);
+
+ if(!u){
+  alert("الحساب غير موجود");
+  return;
+ }
+
+ alert(
+  "Tunilearn – استعادة الباسورد\n\n"+
+  "كلمة السر الخاصة بك هي:\n\n"+u.pass
+ );
 }
 
 function togglePassword(){
-  password.type=password.type==="password"?"text":"password";
+ password.type=password.type==="password"?"text":"password";
+}
+
+function enterHome(){
+ auth.style.display="none";
+ home.style.display="block";
+ renderLevels();
+}
+
+const levelsData=[
+ "7 أساسي","8 أساسي","9 أساسي","1 ثانوي",
+ "2 ثانوي","3 ثانوي","4 ثانوي"
+];
+
+function renderLevels(){
+ levels.innerHTML="";
+ levelsData.forEach(l=>{
+  const d=document.createElement("div");
+  d.className="level";
+  d.innerText=l;
+  d.onclick=()=>openLevel(l);
+  levels.appendChild(d);
+ });
+}
+
+function openLevel(n){
+ home.style.display="none";
+ levelPage.style.display="block";
+ levelTitle.innerText=n;
 }
 </script>
 
