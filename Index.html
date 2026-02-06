@@ -4,252 +4,229 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tuni<span style="color:red">•</span>Learn</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
-html, body{width:100%;height:100%;margin:0;padding:0}
-body{background:#111;color:#1e90ff;display:flex;justify-content:center;align-items:center;flex-direction:column;overflow-x:hidden}
+html,body{width:100%;height:100%}
+body{background:#111;color:#1e90ff;display:flex;justify-content:center;align-items:center;overflow-x:hidden}
 
 /* AUTH */
-#auth{display:flex;justify-content:center;align-items:flex-start;width:100%;height:100vh;background:#111;position:fixed;top:0;left:0;z-index:1000;padding-top:80px;}
-.phone{width:90%;max-width:360px;background:#1a1a1a;padding:20px;border-radius:20px;text-align:center;margin:auto;}
-.phone h1{color:white;font-size:22px;margin-bottom:4px}
-.phone .dot{color:red}
-.phone .tuni{color:white;font-weight:bold;margin:0 2px;}
-.phone p.top-text{color:#87cefa;font-size:14px;margin-bottom:8px;font-weight:bold}
-input{width:100%;padding:10px;margin:6px 0;border-radius:10px;border:none;font-size:14px}
-#showPass{width:100%;background:#333;color:white;border:none;font-size:12px;padding:6px;border-radius:999px;margin-bottom:10px;cursor:pointer}
+#auth{position:fixed;top:0;left:0;width:100%;height:100vh;background:#111;display:flex;justify-content:center;align-items:center;z-index:1000}
+.phone{width:90%;max-width:360px;background:#1a1a1a;padding:20px;border-radius:20px;text-align:center}
+.phone h1{color:white;font-size:22px}
+.dot{color:red}
+.tuni{color:white;font-weight:bold}
+.top-text{color:#87cefa;font-size:14px;font-weight:bold;margin:6px 0}
+input{width:100%;padding:10px;margin:6px 0;border-radius:10px;border:none}
+#showPass{width:100%;background:#333;color:white;border:none;padding:6px;border-radius:999px}
 .buttons{display:flex;justify-content:space-between}
-button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;color:white;font-weight:bold;cursor:pointer;font-size:14px}
-#forgot{width:65%;margin:6px auto;display:block;font-size:12px;background:#2196f3;padding:6px;border-radius:8px;border:none;color:white;cursor:pointer}
-#status{color:#ff5252;margin-top:8px;font-weight:bold;text-align:center;font-size:13px;min-height:20px}
+button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;color:white;font-weight:bold;cursor:pointer}
+#forgot{width:65%;margin:6px auto;background:#2196f3;padding:6px;border-radius:8px;border:none;color:white}
+#status{margin-top:8px;font-weight:bold;font-size:13px;min-height:18px}
 
 /* HOME */
-#home{display:none;padding:8px;width:100%;max-width:360px;margin:0 auto;text-align:center;position:relative;min-height:100vh}
-#home h1{position:absolute;top:5px;left:5px;color:white;font-size:16px;font-weight:bold;margin:0}
-.banner{border:2px solid #1e90ff;background:#87cefa;color:black;padding:12px;border-radius:14px;font-weight:bold;margin-top:50px;font-size:14px}
-.level-container{margin-top:20px;display:flex;flex-direction:column;gap:15px;align-items:flex-start}
+#home{display:none;width:100%;max-width:360px;min-height:100vh;padding:8px;position:relative;text-align:center}
+#home h1{position:absolute;top:5px;left:5px;color:white;font-size:16px}
+.banner{margin-top:50px;border:2px solid #1e90ff;background:#87cefa;color:black;padding:12px;border-radius:14px;font-weight:bold}
+.level-container{margin-top:20px;display:flex;flex-direction:column;gap:15px}
 
 /* LEVEL */
 .level-wrapper{position:relative;width:100%}
-.level{border:2px solid #0d47a1;background:#222;color:#ccc;padding:16px;border-radius:16px;cursor:pointer;font-weight:bold;width:90%;text-align:left;font-size:16px}
+.level{width:90%;border:2px solid #0d47a1;background:#222;color:#ccc;padding:16px;border-radius:16px;font-weight:bold;cursor:pointer;text-align:left}
 
-/* BRANCHES */
-.branches{position:absolute;top:50%;left:calc(50% + 40px);transform:translate(-50%,-50%);width:180px;background:#111;border:2px solid #1e90ff;border-radius:14px;padding:8px;display:none;flex-direction:column;gap:6px;z-index:10}
+/* BRANCH */
+.branches{position:absolute;top:50%;left:calc(50% + 40px);transform:translate(-50%,-50%);width:190px;background:#111;border:2px solid #1e90ff;border-radius:14px;padding:8px;display:none;flex-direction:column;gap:6px;z-index:10}
 .branch{border:1px solid #1e90ff;background:#333;color:white;padding:8px;border-radius:12px;font-size:13px;cursor:pointer}
 
-/* SUBJECT PAGE */
-#subjectPage{display:none;padding:6px;background:#333;min-height:100vh;color:white;width:100%;max-width:350px;margin:0 auto;text-align:center;position:relative}
-#subjectPage h1{position:absolute;top:5px;left:5px;color:white;font-size:16px;font-weight:bold;margin:0}
-.banner-subject{border:2px solid #1e90ff;background:#87cefa;color:black;padding:10px;border-radius:12px;font-weight:bold;margin-top:35px;font-size:13px}
+/* SUBJECT */
+#subjectPage{display:none;background:#333;color:white;min-height:100vh;width:100%;max-width:360px;padding:6px;position:relative;text-align:center}
+#subjectPage h1{position:absolute;top:5px;left:5px;font-size:16px}
+.banner-subject{margin-top:35px;border:2px solid #1e90ff;background:#87cefa;color:black;padding:10px;border-radius:12px;font-weight:bold}
 .subject-list div{border:2px solid red;padding:8px;margin:5px 0;border-radius:12px;font-weight:bold;cursor:pointer;font-size:13px}
-.back{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px;font-weight:bold}
+.back{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px}
 
-/* EXAMS */
-#examPage{display:none;padding:6px;background:#111;color:white;width:100%;max-width:350px;margin:50px auto 0 auto;text-align:center;position:relative;min-height:90vh}
-#examPage h1{position:absolute;top:5px;left:5px;color:white;font-size:16px;font-weight:bold;margin:0}
-.exam-option{border:2px solid red;padding:12px;margin:6px 0;border-radius:12px;font-weight:bold;cursor:pointer;font-size:14px}
-.exam-img { width: 100%; margin-top: 20px; border-radius: 10px; border: 1px solid #1e90ff; }
-.gray-box { width: 100%; height: 250px; background: #333; margin-top: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; border: 2px dashed #444; }
-.back-exam{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px;font-weight:bold}
+/* EXAM */
+#examPage{display:none;background:#111;color:white;min-height:100vh;width:100%;max-width:360px;padding:6px;margin-top:40px;position:relative;text-align:center}
+#examPage h1{position:absolute;top:5px;left:5px;font-size:16px}
+.exam-option{border:2px solid red;padding:12px;margin:6px 0;border-radius:12px;font-weight:bold;cursor:pointer}
+.gray-box{margin-top:20px;height:240px;background:#333;border-radius:10px;border:2px dashed #444;display:flex;align-items:center;justify-content:center;color:#777}
+.back-exam{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px}
 </style>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
-    authDomain: "tunilearn-e4b8e.firebaseapp.com",
-    projectId: "tunilearn-e4b8e",
-    storageBucket: "tunilearn-e4b8e.appspot.com",
-    messagingSenderId: "730477107505",
-    appId: "1:730477107505:web:eee97b8ef099326b8cf810"
-  };
+const firebaseConfig={
+apiKey:"AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
+authDomain:"tunilearn-e4b8e.firebaseapp.com",
+projectId:"tunilearn-e4b8e",
+storageBucket:"tunilearn-e4b8e.appspot.com",
+messagingSenderId:"730477107505",
+appId:"1:730477107505:web:eee97b8ef099326b8cf810"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const sBox = document.getElementById("status");
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const sBox=document.getElementById("status");
 
-  window.signup = async () => {
-    const e = document.getElementById("email").value;
-    const p = document.getElementById("password").value;
-    if(!e || !p) { sBox.innerText = "أدخل البيانات أولاً"; sBox.style.color = "orange"; return; }
-    sBox.innerText = "جاري إنشاء الحساب...";
-    sBox.style.color = "white";
-    try {
-      await createUserWithEmailAndPassword(auth, e, p);
-      sBox.innerText = "تم التسجيل! يمكنك الآن تسجيل الدخول";
-      sBox.style.color = "lime";
-    } catch (err) {
-      sBox.style.color = "red";
-      if(err.code === 'auth/email-already-in-use') sBox.innerText = "هذا الحساب موجود بالفعل";
-      else if(err.code === 'auth/weak-password') sBox.innerText = "كلمة السر ضعيفة جداً";
-      else sBox.innerText = "خطأ في التسجيل";
-    }
-  };
+window.signup=async()=>{
+const e=email.value,p=password.value;
+if(!e||!p){sBox.innerText="أدخل البيانات";return;}
+try{
+await createUserWithEmailAndPassword(auth,e,p);
+sBox.innerText="تم التسجيل بنجاح";sBox.style.color="lime";
+}catch(err){sBox.innerText="خطأ في التسجيل";sBox.style.color="red";}
+};
 
-  window.login = async () => {
-    const e = document.getElementById("email").value;
-    const p = document.getElementById("password").value;
-    if(!e || !p) { sBox.innerText = "أدخل البريد وكلمة السر"; sBox.style.color = "orange"; return; }
-    sBox.innerText = "جاري التحقق...";
-    sBox.style.color = "white";
-    try {
-      await signInWithEmailAndPassword(auth, e, p);
-      document.getElementById("auth").style.display = "none";
-      document.getElementById("home").style.display = "block";
-      renderLevels();
-    } catch (err) {
-      sBox.style.color = "red";
-      sBox.innerText = "البريد أو كلمة السر خاطئة";
-    }
-  };
+window.login=async()=>{
+try{
+await signInWithEmailAndPassword(auth,email.value,password.value);
+authDiv.style.display="none";
+home.style.display="block";
+renderLevels();
+}catch{ sBox.innerText="بيانات خاطئة"; }
+};
 
-  window.forgotPassword = async () => {
-    const e = document.getElementById("email").value;
-    if(!e) { sBox.innerText = "أدخل بريدك أولاً"; return; }
-    try {
-      await sendPasswordResetEmail(auth, e);
-      sBox.innerText = "تم إرسال رابط الاستعادة إلى بريدك";
-      sBox.style.color = "lime";
-    } catch (err) { sBox.innerText = "تعذر الإرسال"; }
-  };
+window.forgotPassword=async()=>{
+if(!email.value)return;
+await sendPasswordResetEmail(auth,email.value);
+sBox.innerText="تم إرسال رابط الاسترجاع";
+};
 </script>
 </head>
+
 <body>
 
 <div id="auth">
-  <div class="phone">
-    <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-    <p class="top-text">المنصة التونسية لاجتياز الفروض والامتحانات</p>
-    <input id="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-    <button id="showPass" onclick="password.type=password.type==='password'?'text':'password'">Show password</button>
-    <div class="buttons">
-      <button onclick="signup()">Sign up</button>
-      <button onclick="login()">Log in</button>
-    </div>
-    <button id="forgot" onclick="forgotPassword()">نسيت كلمة المرور</button>
-    <div id="status"></div>
-  </div>
+<div class="phone">
+<h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+<p class="top-text">المنصة التونسية للفروض والامتحانات</p>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button id="showPass" onclick="password.type=password.type==='password'?'text':'password'">Show password</button>
+<div class="buttons">
+<button onclick="signup()">Sign up</button>
+<button onclick="login()">Log in</button>
+</div>
+<button id="forgot" onclick="forgotPassword()">نسيت كلمة المرور</button>
+<div id="status"></div>
+</div>
 </div>
 
 <div id="home">
-  <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-  <div class="banner">اختر مستواك التعليمي</div>
-  <div class="level-container" id="levelContainer"></div>
+<h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+<div class="banner">جميع الفروض والامتحانات حسب المستويات و الشعب</div>
+<div class="level-container" id="levelContainer"></div>
 </div>
 
 <div id="subjectPage">
-  <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-  <div class="banner-subject" id="subjBanner"></div>
-  <div class="subject-list" id="subjectList"></div>
-  <button class="back" onclick="backLevel()">Back</button>
+<h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+<div class="banner-subject" id="subjBanner"></div>
+<div class="subject-list" id="subjectList"></div>
+<button class="back" onclick="backLevel()">Back</button>
 </div>
 
 <div id="examPage">
-  <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-  <h2 id="examTitle" style="margin-top:20px; color:#87cefa"></h2>
-  <div id="examChoice">
-    <div class="exam-option" onclick="showTest('مراقبة')">فروض مراقبة</div>
-    <div class="exam-option" onclick="showTest('تأليفية')">فروض تأليفية</div>
-  </div>
-  <div id="examResult"></div>
-  <button class="back-exam" onclick="backToSubjects()">Back</button>
+<h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+<h2 id="examTitle" style="margin-top:20px;color:#87cefa"></h2>
+<div id="examChoice">
+<div class="exam-option" onclick="showTest('مراقبة')">فروض مراقبة</div>
+<div class="exam-option" onclick="showTest('تأليفية')">فروض تأليفية</div>
+</div>
+<div id="examResult"></div>
+<button class="back-exam" onclick="backToSubjects()">Back</button>
 </div>
 
 <script>
 const levels={
-"7 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تاريخ/جغرافيا","إعلامية","تكنولوجيا"],
-"8 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تاريخ/جغرافيا","إعلامية","تكنولوجيا"],
-"9 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تاريخ/جغرافيا","إعلامية","تكنولوجيا"],
-"1 ثانوي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","فيزياء/كيمياء","تاريخ/جغرافيا","تكنولوجيا","إعلامية"],
+"7 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
+"8 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
+"9 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
+"1 ثانوي":["عربية","فرنسية","انڨليزية","رياضيات","علوم الحياة و الارض","فيزياء","كيمياء","تكنولوجيا","تاريخ","جغرافيا","تربية اسلامية","تربية مدنية","اعلامية"],
 "2 ثانوي":{
-"آداب":["عربية","فرنسية","انڨليزية","تاريخ/جغرافيا","تفكير إسلامي","إعلامية"],
-"علوم":["رياضيات","فيزياء/كيمياء","علوم الحياة والأرض","تكنولوجيا","عربية","فرنسية","انڨليزية"],
-"اقتصاد وتصرف":["اقتصاد","تصرف","رياضيات","تاريخ/جغرافيا","فرنسية","انڨليزية"],
-"تكنولوجيا الإعلامية":["إعلامية","رياضيات","فيزياء","فرنسية","انڨليزية"]},
+"آداب":["عربية","فرنسية","انڨليزية","تاريخ","جغرافيا","تربية اسلامية","تربية مدنية","اعلامية"],
+"علوم":["رياضيات","علوم فزيائية","علوم الحياة و الارض","تكنولوجيا","عربية","فرنسية","انڨليزية"],
+"اقتصاد و تصرف":["اقتصاد","التصرف","رياضيات","تاريخ","جغرافيا","فرنسية","انڨليزية"],
+"تكنولجيا اعلامية":["اعلامية","رياضيات","علوم فزيائية","تكنولوجيا","فرنسية","انڨليزية"]},
 "3 ثانوي":{
-"آداب":["فلسفة","عربية","تاريخ/جغرافيا","فرنسية","انڨليزية"],
-"رياضيات":["رياضيات","فيزياء/كيمياء","علوم الحياة والأرض","فرنسية","انڨليزية"],
-"علوم تجريبية":["علوم الحياة والأرض","فيزياء/كيمياء","رياضيات","فرنسية","انڨليزية"],
-"علوم تقنية":["تكنولوجيا","رياضيات","فيزياء/كيمياء","فرنسية","انڨليزية"],
-"اقتصاد وتصرف":["اقتصاد","تصرف","رياضيات","تاريخ/جغرافيا","فرنسية","انڨليزية"],
-"إعلامية":["إعلامية","رياضيات","فيزياء","فرنسية","انڨليزية"]},
+"آداب":["عربية","فرنسية","انڨليزية","تاريخ","جغرافيا","فلسفة"],
+"علوم":["علوم فزيائية","علوم الحياة و الارض","رياضيات","فرنسية","انڨليزية"],
+"علوم تقنية":["تكنولوجيا","رياضيات","علوم فزيائية","فرنسية","انڨليزية"],
+"رياضيات":["رياضيات","علوم فزيائية","فرنسية","انڨليزية"],
+"اقتصاد و تصرف":["اقتصاد","التصرف","رياضيات","تاريخ","جغرافيا","فرنسية","انڨليزية"],
+"اعلامية":["اعلامية","رياضيات","علوم فزيائية","فرنسية","انڨليزية"]},
 "باكالوريا":{
-"آداب":["فلسفة","عربية","تاريخ/جغرافيا","تفكير إسلامي","فرنسية","انڨليزية"],
-"رياضيات":["رياضيات","فيزياء/كيمياء","علوم الحياة والأرض","فرنسية","انڨليزية"],
-"علوم تجريبية":["علوم الحياة والأرض","فيزياء/كيمياء","رياضيات","فرنسية","انڨليزية"],
-"علوم تقنية":["تكنولوجيا","رياضيات","فيزياء/كيمياء","فرنسية","انڨليزية"],
-"اقتصاد وتصرف":["اقتصاد","تصرف","رياضيات","تاريخ/جغرافيا","فرنسية","انڨليزية"],
-"إعلامية":["خوارزميات","قواعد بيانات","إعلامية","رياضيات","فيزياء","انڨليزية"]}
+"آداب":["فلسفة","عربية","تاريخ","جغرافيا","تفكير اسلامي","فرنسية","انڨليزية"],
+"رياضيات":["رياضيات","علوم فزيائية","علوم الحياة و الارض","فرنسية","انڨليزية"],
+"علوم تجريبية":["علوم الحياة و الارض","علوم فزيائية","رياضيات","فرنسية","انڨليزية"],
+"علوم تقنية":["تكنولوجيا","رياضيات","علوم فزيائية","فرنسية","انڨليزية"],
+"اقتصاد و تصرف":["اقتصاد","التصرف","رياضيات","تاريخ","جغرافيا","فرنسية","انڨليزية"],
+"اعلامية":["خوارزميات","قواعد بيانات","اعلامية","رياضيات","علوم فزيائية","انڨليزية"]}
 };
 
-let currentSub = "";
-let openedBranch = null;
+let openedBranch=null,currentSub="";
 
 function renderLevels(){
-  const container = document.getElementById("levelContainer");
-  container.innerHTML="";
-  Object.keys(levels).forEach(l=>{
-    const wrap=document.createElement("div"); wrap.className="level-wrapper";
-    const lvl=document.createElement("div"); lvl.className="level"; lvl.innerText=l;
-    const branches=document.createElement("div"); branches.className="branches";
-    const data=levels[l];
-    if(typeof data==="object" && !Array.isArray(data)){
-      Object.keys(data).forEach(b=>{
-        const br=document.createElement("div"); br.className="branch"; br.innerText=b;
-        br.onclick=()=>showSubjects(data[b],l+" - "+b);
-        branches.appendChild(br);
-      });
-      lvl.onclick=()=>{
-        const isVisible = branches.style.display === "flex";
-        if(openedBranch) openedBranch.style.display="none";
-        branches.style.display = isVisible ? "none" : "flex";
-        openedBranch = isVisible ? null : branches;
-      };
-    } else {
-      lvl.onclick=()=>showSubjects(data,l);
-    }
-    wrap.appendChild(lvl); wrap.appendChild(branches); container.appendChild(wrap);
-  });
+levelContainer.innerHTML="";
+Object.keys(levels).forEach(l=>{
+const wrap=document.createElement("div");
+wrap.className="level-wrapper";
+const lvl=document.createElement("div");
+lvl.className="level";
+lvl.innerText=l;
+const branches=document.createElement("div");
+branches.className="branches";
+const data=levels[l];
+if(typeof data==="object"&&!Array.isArray(data)){
+Object.keys(data).forEach(b=>{
+const br=document.createElement("div");
+br.className="branch";
+br.innerText=b;
+br.onclick=()=>showSubjects(data[b],l+" - "+b);
+branches.appendChild(br);
+});
+lvl.onclick=()=>{
+if(openedBranch&&openedBranch!==branches)openedBranch.style.display="none";
+branches.style.display=branches.style.display==="flex"?"none":"flex";
+openedBranch=branches.style.display==="flex"?branches:null;
+};
+}else lvl.onclick=()=>showSubjects(data,l);
+wrap.appendChild(lvl);wrap.appendChild(branches);levelContainer.appendChild(wrap);
+});
 }
 
-function showSubjects(subs, title){
-  document.getElementById("home").style.display="none";
-  document.getElementById("subjectPage").style.display="block";
-  document.getElementById("subjBanner").innerText=title;
-  const list = document.getElementById("subjectList");
-  list.innerHTML="";
-  subs.forEach(s=>{
-    const d=document.createElement("div"); d.innerText=s;
-    d.onclick=()=>{
-      currentSub = s;
-      document.getElementById("subjectPage").style.display="none";
-      document.getElementById("examPage").style.display="block";
-      document.getElementById("examTitle").innerText=s;
-      document.getElementById("examChoice").style.display="block";
-      document.getElementById("examResult").innerHTML="";
-    };
-    list.appendChild(d);
-  });
+function showSubjects(subs,title){
+home.style.display="none";
+subjectPage.style.display="block";
+subjBanner.innerText=title;
+subjectList.innerHTML="";
+subs.forEach(s=>{
+const d=document.createElement("div");
+d.innerText=s;
+d.onclick=()=>{
+currentSub=s;
+subjectPage.style.display="none";
+examPage.style.display="block";
+examTitle.innerText=s;
+examChoice.style.display="block";
+examResult.innerHTML="";
+};
+subjectList.appendChild(d);
+});
 }
 
-window.showTest = (type) => {
-  document.getElementById("examChoice").style.display = "none";
-  document.getElementById("examResult").innerHTML = `<div class="gray-box">لا توجد صور متاحة لـ ${currentSub} (${type}) حالياً</div>`;
-};
+function showTest(type){
+examChoice.style.display="none";
+examResult.innerHTML=`<div class="gray-box">لا توجد ملفات لـ ${currentSub} (${type})</div>`;
+}
 
-window.backLevel = () => { document.getElementById("subjectPage").style.display="none"; document.getElementById("home").style.display="block"; };
-window.backToSubjects = () => {
-  if(document.getElementById("examChoice").style.display === "none") {
-    document.getElementById("examChoice").style.display = "block";
-    document.getElementById("examResult").innerHTML = "";
-  } else {
-    document.getElementById("examPage").style.display="none";
-    document.getElementById("subjectPage").style.display="block";
-  }
-};
+function backLevel(){subjectPage.style.display="none";home.style.display="block"}
+function backToSubjects(){
+if(examChoice.style.display==="none"){examChoice.style.display="block";examResult.innerHTML="";}
+else{examPage.style.display="none";subjectPage.style.display="block";}
+}
 </script>
+
 </body>
 </html>
