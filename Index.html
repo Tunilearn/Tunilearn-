@@ -3,170 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TuniLearn</title>
+<title>Tuni • Learn</title>
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#111;
-  color:#1e90ff;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
+html, body{width:100%;height:100%;margin:0;padding:0}
+body{background:#111;color:#1e90ff;display:flex;justify-content:center;align-items:center;flex-direction:column;overflow-x:hidden}
 
 /* AUTH */
-#auth{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.phone{
-  width:360px;
-  background:#1a1a1a;
-  padding:25px;
-  border-radius:22px;
-}
-h1{text-align:center;color:white}
-.dot{color:red}
-p{color:#aaa;text-align:center;font-size:15px}
-
-input{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:12px;
-  border:none;
-}
-
-/* SHOW PASSWORD */
-#showPass{
-  width:100%;
-  background:#333;
-  color:white;
-  border:none;
-  font-size:10px;
-  padding:4px;
-  border-radius:999px;
-  margin-bottom:10px;
-  cursor:pointer;
-}
-
-/* BUTTONS */
-.buttons{
-  display:flex;
-  justify-content:space-between;
-}
-button{
-  width:48%;
-  padding:12px;
-  border:none;
-  border-radius:14px;
-  background:#e53935;
-  color:white;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-#forgot{
-  width:60%;
-  margin:6px auto;
-  display:block;
-  font-size:12px;
-  background:#2196f3;
-  padding:6px;
-  border-radius:8px;
-}
-
-#status{
-  color:#ff5252;
-  text-align:center;
-  margin-top:10px;
-  font-weight:bold;
-}
+#auth{display:flex;justify-content:center;align-items:center;width:100%;height:100vh;background:#111;position:fixed;top:0;left:0;z-index:1000}
+.phone{width:90%;max-width:360px;background:#1a1a1a;padding:20px;border-radius:20px;text-align:center;transform:translateY(0);}
+.phone h1{color:white;font-size:22px;margin-bottom:4px}
+.phone .dot{color:red}
+.phone .tuni{color:white;font-weight:bold;margin:0 2px;}
+.phone p.top-text{color:#87cefa;font-size:14px;margin-bottom:8px;font-weight:bold}
+.phone p.description{color:#87cefa;font-size:14px;margin-bottom:8px}
+input{width:100%;padding:10px;margin:6px 0;border-radius:10px;border:none;font-size:14px}
+#showPass{width:100%;background:#333;color:white;border:none;font-size:12px;padding:6px;border-radius:999px;margin-bottom:10px}
+.buttons{display:flex;justify-content:space-between}
+button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;color:white;font-weight:bold;cursor:pointer;font-size:14px}
+#forgot{width:65%;margin:6px auto;display:block;font-size:12px;background:#2196f3;padding:6px;border-radius:8px}
+#status{color:#ff5252;margin-top:8px;font-weight:bold;text-align:center}
 
 /* HOME */
-#home{display:none;padding:20px}
-.home-title{color:white;font-size:18px;margin-bottom:10px}
-.banner{
-  border:2px solid #1e90ff;
-  background:#87cefa;
-  color:black;
-  padding:12px;
-  border-radius:14px;
-  text-align:center;
-  font-weight:bold;
-}
+#home{display:none;padding:6px;width:100%;max-width:360px;margin:0 auto;text-align:center;position:relative;min-height:100vh}
+#home h1{position:absolute;top:5px;left:5px;color:white;font-size:12px;font-weight:bold;margin:0}
+.banner{border:2px solid #1e90ff;background:#87cefa;color:black;padding:10px;border-radius:12px;font-weight:bold;margin-top:40px;font-size:14px}
+.level-container{margin-top:15px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
 
-.level-container{
-  margin-top:15px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
+/* LEVEL */
+.level-wrapper{position:relative;width:100%}
+.level{border:2px solid #0d47a1;background:#222;color:#ccc;padding:18px;border-radius:18px;cursor:pointer;font-weight:bold;width:95%;text-align:left;font-size:16px}
 
-.level{
-  border:1px solid #1e90ff;
-  padding:12px;
-  border-radius:10px;
-  background:#222;
-  color:#ccc;
-  cursor:pointer;
-  position:relative;
-}
+/* BRANCHES */
+.branches{position:absolute;top:52%;left:calc(50% + 40px);transform:translate(-50%,-50%);width:180px;background:#111;border:2px solid #1e90ff;border-radius:14px;padding:8px;display:none;flex-direction:column;gap:8px;z-index:10}
+.branch{border:2px solid #1e90ff;background:#333;color:white;padding:10px;border-radius:14px;font-size:14px;cursor:pointer}
 
-.sublvl-dropdown{
-  display:none;
-  position:absolute;
-  top:100%;
-  right:0;
-  background:#222;
-  border:1px solid #1e90ff;
-  border-radius:8px;
-  width:160px;
-  z-index:10;
-}
+/* SUBJECT PAGE */
+#subjectPage{display:none;padding:10px;background:#333;min-height:100vh;color:white;width:100%;max-width:340px;margin:0 auto;text-align:center;position:relative}
+#subjectPage h1{position:absolute;top:5px;left:5px;color:white;font-size:12px;font-weight:bold;margin:0}
+.subject-list div{border:3px solid red;padding:10px;margin:5px 0;border-radius:14px;font-weight:bold;cursor:pointer;font-size:15px}
+.small-subjects div{font-size:13px;padding:8px}
+.back{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:10px;border-radius:12px;font-weight:bold}
 
-.sublvl-dropdown div{
-  padding:6px 10px;
-  cursor:pointer;
-  color:white;
-}
+/* EXAMS */
+#examPage{display:none;padding:10px;background:#111;min-height:100vh;color:white;width:100%;max-width:340px;margin:0 auto;text-align:center;position:relative}
+#examPage h1{position:absolute;top:5px;left:5px;color:white;font-size:12px;font-weight:bold;margin:0}
+.exam-option{border:3px solid red;padding:12px;margin:6px 0;border-radius:14px;font-weight:bold;cursor:pointer;font-size:15px}
+.back-exam{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:10px;border-radius:12px;font-weight:bold}
 
-.sublvl-dropdown div:hover{
-  background:#1e90ff;
-  color:#111;
-}
-
-/* LEVEL PAGE */
-#levelPage{display:none;padding:20px}
-.file{
-  border:1px solid #1e90ff;
-  padding:8px;
-  border-radius:8px;
-  margin:6px 0;
-  color:#ccc;
-  cursor:pointer;
-}
-.back{
-  margin-top:15px;
-  border:2px solid green;
-  background:none;
-  color:white;
-  padding:8px;
-  border-radius:10px;
-}
-
-/* RED SUBJECT PAGE */
-#subjectPage{display:none;padding:20px;background:red;height:100vh;color:white}
-#subjectPage h2{text-align:center;margin-bottom:15px}
-.subject-list div{
-  background:#880000;
-  padding:10px;
-  margin:5px 0;
-  border-radius:8px;
-  cursor:pointer;
-  text-align:center;
-}
+/* RESPONSIVE */
+@media (max-height:700px){.level{padding:14px;font-size:14px}.branch{padding:8px;font-size:13px}.subject-list div,.exam-option{padding:8px;font-size:14px}}
 </style>
 </head>
 <body>
@@ -174,19 +60,16 @@ button{
 <!-- AUTH -->
 <div id="auth">
   <div class="phone">
-    <h1>Tuni<span class="dot">•</span>Learn</h1>
-    <p>منصة تونسية للفروض والاختبارات</p>
-
+    <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+    <p class="top-text">المنصة التونسية لاجتياز الفروض والامتحانات</p>
+    <p class="description">سجل دخولك وابدى تعلم</p>
     <input id="email" placeholder="Email">
     <input id="password" type="password" placeholder="Password">
-
-    <button id="showPass" onclick="togglePassword()">Show password</button>
-
+    <button id="showPass" onclick="password.type=password.type==='password'?'text':'password'">Show password</button>
     <div class="buttons">
       <button onclick="signup()">Sign up</button>
       <button onclick="login()">Log in</button>
     </div>
-
     <button id="forgot" onclick="forgotPassword()">Forgot password</button>
     <div id="status"></div>
   </div>
@@ -194,31 +77,34 @@ button{
 
 <!-- HOME -->
 <div id="home">
-  <div class="home-title">Learning Space</div>
-  <div class="banner">All exams that you need</div>
+  <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+  <div class="banner" id="topBanner">جميع الفروض والامتحانات حسب المستويات و الشعب</div>
   <div class="level-container" id="levelContainer"></div>
 </div>
 
-<!-- LEVEL PAGE -->
-<div id="levelPage">
-  <h2 id="levelTitle" style="color:white"></h2>
-  <div class="file" onclick="openSubjects()">فروض مراقبة</div>
-  <div class="file" onclick="openSubjects()">فروض تأليفية</div>
-  <button class="back" onclick="backHome()">Back / رجوع</button>
-</div>
-
-<!-- RED SUBJECT PAGE -->
+<!-- SUBJECT PAGE -->
 <div id="subjectPage">
-  <h2>المواد التعليمية</h2>
+  <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+  <h2 id="subjectTitle"></h2>
   <div class="subject-list" id="subjectList"></div>
-  <button class="back" onclick="backLevel()">Back / رجوع</button>
+  <button class="back" onclick="backLevel()">Back</button>
 </div>
 
-<script type="module">
-// Firebase import
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
+<!-- EXAMS PAGE -->
+<div id="examPage">
+  <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+  <h2 id="examTitle"></h2>
+  <div class="exam-option">فروض مراقبة</div>
+  <div class="exam-option">فروض تأليفية</div>
+  <button class="back-exam" onclick="backToSubjects()">Back</button>
+</div>
 
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
+
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
   authDomain: "tunilearn-e4b8e.firebaseapp.com",
@@ -230,126 +116,68 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-</script>
+const auth = getAuth(app);
 
-<script>
-const auth=document.getElementById("auth");
-const home=document.getElementById("home");
-const levelContainer=document.getElementById("levelContainer");
-const levelPage=document.getElementById("levelPage");
-const levelTitle=document.getElementById("levelTitle");
+// LEVELS DATA
+const levels={
+"7 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
+"8 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
+"9 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"]
+};
+
+// AUTH FUNCTIONS
 const status=document.getElementById("status");
-const subjectPage=document.getElementById("subjectPage");
-const subjectList=document.getElementById("subjectList");
+const emailInput=document.getElementById("email");
+const passwordInput=document.getElementById("password");
 
-const levels=[
- {name:"7 أساسي"},
- {name:"8 أساسي"},
- {name:"9 أساسي"},
- {name:"1 ثانوي"},
- {name:"2 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم"]},
- {name:"3 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم تقنية","علوم","رياضيات"]},
- {name:"4 ثانوي",shubs:["آداب","اقتصاد","علوم إعلامية","علوم تقنية","علوم","رياضيات"]}
-];
-
-const subjects=["عربية","فرنسية","إنجليزية","تاريخ","جغرافيا","مدنية","إسلامية","رياضيات","علوم الحياة والأرض","علوم تقنية","علوم إعلامية","فيزياء"];
-
-// SIGNUP
 function signup(){
- if(!email.value||!password.value){
-  status.innerText="❌ أكمل المعطيات"; return;
- }
- const savedEmail = localStorage.getItem("email");
- if(savedEmail === email.value){
-   status.innerText="❌ هذا الإيميل مستعمل مسبقاً"; 
-   return;
- }
- localStorage.setItem("email",email.value);
- localStorage.setItem("pass",password.value);
- auth.style.display="none";
- home.style.display="block";
- renderLevels();
- status.innerText="";
+  createUserWithEmailAndPassword(auth,emailInput.value,passwordInput.value)
+  .then(()=>{status.innerText="تم التسجيل بنجاح";status.style.color="#4caf50";})
+  .catch(e=>{status.innerText=e.message;status.style.color="#ff5252";});
 }
 
-// LOGIN
 function login(){
- const savedEmail = localStorage.getItem("email");
- const savedPass = localStorage.getItem("pass");
- if(email.value===savedEmail && password.value===savedPass){
-  auth.style.display="none";
-  home.style.display="block";
-  renderLevels();
-  status.innerText="";
- } else status.innerText="❌ معلومات خاطئة";
+  signInWithEmailAndPassword(auth,emailInput.value,passwordInput.value)
+  .then(()=>{document.getElementById("auth").style.display="none";document.getElementById("home").style.display="block";renderLevels();})
+  .catch(e=>{status.innerText=e.message;status.style.color="#ff5252";});
 }
 
-// FORGOT PASSWORD
 function forgotPassword(){
- const e=prompt("أدخل الإيميل:");
- if(e===localStorage.getItem("email")){
-  alert("كلمة السر: "+localStorage.getItem("pass"));
- } else alert("الإيميل غير موجود");
+  sendPasswordResetEmail(auth,emailInput.value)
+  .then(()=>alert("تم ارسال رابط استعادة كلمة السر"))
+  .catch(e=>alert(e.message));
 }
 
-// SHOW PASSWORD
-function togglePassword(){
- password.type=password.type==="password"?"text":"password";
-}
-
-// RENDER LEVELS
+// LEVELS RENDER
 function renderLevels(){
- levelContainer.innerHTML="";
- levels.forEach(l=>{
-  const d=document.createElement("div");
-  d.className="level";
-  d.innerText=l.name;
-
-  if(l.shubs){
-    const box=document.createElement("div");
-    box.className="sublvl-dropdown";
-    l.shubs.forEach(s=>{
-      const sub=document.createElement("div");
-      sub.innerText=s;
-      sub.onclick=e=>{
-        e.stopPropagation();
-        openLevel(l.name+" "+s);
-        box.style.display="none";
-      };
-      box.appendChild(sub);
-    });
-    d.appendChild(box);
-    d.onclick=()=>box.style.display=
-      box.style.display==="block"?"none":"block";
-  } else d.onclick=()=>openLevel(l.name);
-
-  levelContainer.appendChild(d);
- });
+  const container=document.getElementById("levelContainer");
+  container.innerHTML="";
+  Object.keys(levels).forEach(l=>{
+    const lvlDiv=document.createElement("div");
+    lvlDiv.className="level";
+    lvlDiv.innerText=l;
+    lvlDiv.onclick=()=>showSubjects(levels[l],l);
+    container.appendChild(lvlDiv);
+  });
 }
 
-// OPEN LEVEL
-function openLevel(n){
- home.style.display="none";
- levelPage.style.display="block";
- levelTitle.innerText=n;
+function showSubjects(subs,title){
+  document.getElementById("home").style.display="none";
+  document.getElementById("subjectPage").style.display="block";
+  document.getElementById("subjectTitle").innerText=title;
+  const list=document.getElementById("subjectList");
+  list.innerHTML="";
+  subs.forEach(s=>{
+    const d=document.createElement("div");
+    d.innerText=s;
+    d.onclick=()=>{document.getElementById("subjectPage").style.display="none";document.getElementById("examPage").style.display="block";document.getElementById("examTitle").innerText=s;}
+    list.appendChild(d);
+  });
 }
 
-// OPEN SUBJECTS (RED PAGE)
-function openSubjects(){
- levelPage.style.display="none";
- subjectPage.style.display="block";
- subjectList.innerHTML="";
- subjects.forEach(s=>{
-   const div=document.createElement("div");
-   div.innerText=s;
-   subjectList.appendChild(div);
- });
-}
-
-// BACK FUNCTIONS
-function backHome(){levelPage.style.display="none"; home.style.display="block";}
-function backLevel(){subjectPage.style.display="none"; levelPage.style.display="block";}
+function backLevel(){document.getElementById("subjectPage").style.display="none";document.getElementById("home").style.display="block";}
+function backToSubjects(){document.getElementById("examPage").style.display="none";document.getElementById("subjectPage").style.display="block";}
 </script>
+
 </body>
 </html>
