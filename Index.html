@@ -11,18 +11,17 @@ body{background:#111;color:#1e90ff;display:flex;justify-content:center;align-ite
 
 /* AUTH */
 #auth{display:flex;justify-content:center;align-items:flex-start;width:100%;height:100vh;background:#111;position:fixed;top:0;left:0;z-index:1000;padding-top:80px;}
-.phone{width:90%;max-width:360px;background:#1a1a1a;padding:20px;border-radius:20px;text-align:center;transform:translateY(0);margin:auto;}
+.phone{width:90%;max-width:360px;background:#1a1a1a;padding:20px;border-radius:20px;text-align:center;margin:auto;}
 .phone h1{color:white;font-size:22px;margin-bottom:4px}
 .phone .dot{color:red}
 .phone .tuni{color:white;font-weight:bold;margin:0 2px;}
 .phone p.top-text{color:#87cefa;font-size:14px;margin-bottom:8px;font-weight:bold}
-.phone p.description{color:#87cefa;font-size:14px;margin-bottom:8px}
 input{width:100%;padding:10px;margin:6px 0;border-radius:10px;border:none;font-size:14px}
-#showPass{width:100%;background:#333;color:white;border:none;font-size:12px;padding:6px;border-radius:999px;margin-bottom:10px}
+#showPass{width:100%;background:#333;color:white;border:none;font-size:12px;padding:6px;border-radius:999px;margin-bottom:10px;cursor:pointer}
 .buttons{display:flex;justify-content:space-between}
 button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;color:white;font-weight:bold;cursor:pointer;font-size:14px}
-#forgot{width:65%;margin:6px auto;display:block;font-size:12px;background:#2196f3;padding:6px;border-radius:8px}
-#status{color:#ff5252;margin-top:8px;font-weight:bold;text-align:center}
+#forgot{width:65%;margin:6px auto;display:block;font-size:12px;background:#2196f3;padding:6px;border-radius:8px;border:none;color:white;cursor:pointer}
+#status{color:#ff5252;margin-top:8px;font-weight:bold;text-align:center;font-size:13px;min-height:20px}
 
 /* HOME */
 #home{display:none;padding:8px;width:100%;max-width:360px;margin:0 auto;text-align:center;position:relative;min-height:100vh}
@@ -43,7 +42,6 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
 #subjectPage h1{position:absolute;top:5px;left:5px;color:white;font-size:16px;font-weight:bold;margin:0}
 .banner-subject{border:2px solid #1e90ff;background:#87cefa;color:black;padding:10px;border-radius:12px;font-weight:bold;margin-top:35px;font-size:13px}
 .subject-list div{border:2px solid red;padding:8px;margin:5px 0;border-radius:12px;font-weight:bold;cursor:pointer;font-size:13px}
-.small-subjects div{font-size:12px;padding:6px}
 .back{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px;font-weight:bold}
 
 /* EXAMS */
@@ -53,13 +51,8 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
 .exam-img { width: 100%; margin-top: 20px; border-radius: 10px; border: 1px solid #1e90ff; }
 .gray-box { width: 100%; height: 250px; background: #333; margin-top: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; border: 2px dashed #444; }
 .back-exam{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px;font-weight:bold}
-
-@media (max-height:700px){
-.level{padding:12px;font-size:14px}
-.branch{padding:6px;font-size:12px}
-.subject-list div,.exam-option{padding:6px;font-size:12px}
-}
 </style>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
@@ -75,54 +68,60 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const sBox = document.getElementById("status");
 
   window.signup = async () => {
     const e = document.getElementById("email").value;
     const p = document.getElementById("password").value;
-    const s = document.getElementById("status");
-    s.innerText = "جاري التسجيل...";
+    if(!e || !p) { sBox.innerText = "أدخل البيانات أولاً"; sBox.style.color = "orange"; return; }
+    sBox.innerText = "جاري إنشاء الحساب...";
+    sBox.style.color = "white";
     try {
       await createUserWithEmailAndPassword(auth, e, p);
-      s.innerText = "تم التسجيل بنجاح! اضغط Log in";
-      s.style.color = "lime";
+      sBox.innerText = "تم التسجيل! يمكنك الآن تسجيل الدخول";
+      sBox.style.color = "lime";
     } catch (err) {
-      s.innerText = "خطأ: " + err.message;
-      s.style.color = "red";
+      sBox.style.color = "red";
+      if(err.code === 'auth/email-already-in-use') sBox.innerText = "هذا الحساب موجود بالفعل";
+      else if(err.code === 'auth/weak-password') sBox.innerText = "كلمة السر ضعيفة جداً";
+      else sBox.innerText = "خطأ في التسجيل";
     }
   };
 
   window.login = async () => {
     const e = document.getElementById("email").value;
     const p = document.getElementById("password").value;
-    const s = document.getElementById("status");
-    s.innerText = "جاري التحقق...";
+    if(!e || !p) { sBox.innerText = "أدخل البريد وكلمة السر"; sBox.style.color = "orange"; return; }
+    sBox.innerText = "جاري التحقق...";
+    sBox.style.color = "white";
     try {
       await signInWithEmailAndPassword(auth, e, p);
       document.getElementById("auth").style.display = "none";
       document.getElementById("home").style.display = "block";
       renderLevels();
     } catch (err) {
-      s.innerText = "البريد أو كلمة السر خاطئة";
-      s.style.color = "red";
+      sBox.style.color = "red";
+      sBox.innerText = "البريد أو كلمة السر خاطئة";
     }
   };
 
   window.forgotPassword = async () => {
     const e = document.getElementById("email").value;
-    if(!e) { alert("أدخل البريد أولاً"); return; }
+    if(!e) { sBox.innerText = "أدخل بريدك أولاً"; return; }
     try {
       await sendPasswordResetEmail(auth, e);
-      alert("تم إرسال رابط استعادة كلمة السر");
-    } catch (err) { alert(err.message); }
+      sBox.innerText = "تم إرسال رابط الاستعادة إلى بريدك";
+      sBox.style.color = "lime";
+    } catch (err) { sBox.innerText = "تعذر الإرسال"; }
   };
 </script>
 </head>
 <body>
+
 <div id="auth">
   <div class="phone">
     <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
     <p class="top-text">المنصة التونسية لاجتياز الفروض والامتحانات</p>
-    <p class="description">سجل دخولك وابدى تعلم</p>
     <input id="email" placeholder="Email">
     <input id="password" type="password" placeholder="Password">
     <button id="showPass" onclick="password.type=password.type==='password'?'text':'password'">Show password</button>
@@ -137,21 +136,20 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
 
 <div id="home">
   <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-  <div class="banner" id="topBanner">جميع الفروض والامتحانات حسب المستويات و الشعب</div>
+  <div class="banner">اختر مستواك التعليمي</div>
   <div class="level-container" id="levelContainer"></div>
 </div>
 
 <div id="subjectPage">
   <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-  <div class="banner-subject">جميع الفروض والامتحانات حسب المستويات و الشعب</div>
-  <h2 id="subjectTitle"></h2>
+  <div class="banner-subject" id="subjBanner"></div>
   <div class="subject-list" id="subjectList"></div>
   <button class="back" onclick="backLevel()">Back</button>
 </div>
 
 <div id="examPage">
   <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-  <h2 id="examTitle"></h2>
+  <h2 id="examTitle" style="margin-top:20px; color:#87cefa"></h2>
   <div id="examChoice">
     <div class="exam-option" onclick="showTest('مراقبة')">فروض مراقبة</div>
     <div class="exam-option" onclick="showTest('تأليفية')">فروض تأليفية</div>
@@ -161,116 +159,97 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
 </div>
 
 <script>
-// Mock Images
-const examImages = {
-  "رياضيات": { "مراقبة": "https://via.placeholder.com/400x600?text=Math+Test", "تأليفية": "" },
-};
-
 const levels={
-"7 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","إعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
-"8 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","إعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
-"9 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","إعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
-"1 ثانوي":["عربية","فرنسية","انڨليزية","رياضيات","علوم الحياة و الارض","كيمياء","فيزياء","تكنولوجيا","تاريخ","جغرافيا","تربية اسلامية","تربية مدنية","إعلامية"],
+"7 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تاريخ/جغرافيا","إعلامية","تكنولوجيا"],
+"8 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تاريخ/جغرافيا","إعلامية","تكنولوجيا"],
+"9 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تاريخ/جغرافيا","إعلامية","تكنولوجيا"],
+"1 ثانوي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","فيزياء/كيمياء","تاريخ/جغرافيا","تكنولوجيا","إعلامية"],
 "2 ثانوي":{
-"آداب":["عربية","فرنسية","انڨليزية","تاريخ","جغرافيا","تربية اسلامية","إعلامية"],
-"علوم":["رياضيات","فيزياء","علوم الحياة و الارض","تكنولوجيا","عربية","فرنسية","انڨليزية"],
-"اقتصاد وتصرف":["اقتصاد","تصرف","رياضيات","تاريخ","جغرافيا","فرنسية","انڨليزية"],
-"تكنولوجيا الإعلامية":["إعلامية","رياضيات","فيزياء","تكنولوجيا","فرنسية","انڨليزية"]},
+"آداب":["عربية","فرنسية","انڨليزية","تاريخ/جغرافيا","تفكير إسلامي","إعلامية"],
+"علوم":["رياضيات","فيزياء/كيمياء","علوم الحياة والأرض","تكنولوجيا","عربية","فرنسية","انڨليزية"],
+"اقتصاد وتصرف":["اقتصاد","تصرف","رياضيات","تاريخ/جغرافيا","فرنسية","انڨليزية"],
+"تكنولوجيا الإعلامية":["إعلامية","رياضيات","فيزياء","فرنسية","انڨليزية"]},
 "3 ثانوي":{
-"آداب":["فلسفة","عربية","تاريخ","جغرافيا","فرنسية","انڨليزية"],
-"رياضيات":["رياضيات","فيزياء","علوم الحياة و الارض","فرنسية","انڨليزية","عربية"],
-"علوم تجريبية":["علوم الحياة و الارض","فيزياء","رياضيات","فرنسية","انڨليزية","عربية"],
-"علوم تقنية":["تكنولوجيا","رياضيات","فيزياء","فرنسية","انڨليزية","عربية"],
-"اقتصاد وتصرف":["اقتصاد","تصرف","رياضيات","تاريخ","جغرافيا","فرنسية","انڨليزية"],
+"آداب":["فلسفة","عربية","تاريخ/جغرافيا","فرنسية","انڨليزية"],
+"رياضيات":["رياضيات","فيزياء/كيمياء","علوم الحياة والأرض","فرنسية","انڨليزية"],
+"علوم تجريبية":["علوم الحياة والأرض","فيزياء/كيمياء","رياضيات","فرنسية","انڨليزية"],
+"علوم تقنية":["تكنولوجيا","رياضيات","فيزياء/كيمياء","فرنسية","انڨليزية"],
+"اقتصاد وتصرف":["اقتصاد","تصرف","رياضيات","تاريخ/جغرافيا","فرنسية","انڨليزية"],
 "إعلامية":["إعلامية","رياضيات","فيزياء","فرنسية","انڨليزية"]},
 "باكالوريا":{
-"آداب":["فلسفة","عربية","تاريخ","جغرافيا","فرنسية","انڨليزية"],
-"رياضيات":["رياضيات","فيزياء","علوم الحياة و الارض","فرنسية","انڨليزية","عربية"],
-"علوم تجريبية":["علوم الحياة و الارض","فيزياء","رياضيات","فرنسية","انڨليزية","عربية"],
-"علوم تقنية":["تكنولوجيا","رياضيات","فيزياء","فرنسية","انڨليزية","عربية"],
-"اقتصاد وتصرف":["اقتصاد","تصرف","رياضيات","تاريخ","جغرافيا","فرنسية","انڨليزية"],
+"آداب":["فلسفة","عربية","تاريخ/جغرافيا","تفكير إسلامي","فرنسية","انڨليزية"],
+"رياضيات":["رياضيات","فيزياء/كيمياء","علوم الحياة والأرض","فرنسية","انڨليزية"],
+"علوم تجريبية":["علوم الحياة والأرض","فيزياء/كيمياء","رياضيات","فرنسية","انڨليزية"],
+"علوم تقنية":["تكنولوجيا","رياضيات","فيزياء/كيمياء","فرنسية","انڨليزية"],
+"اقتصاد وتصرف":["اقتصاد","تصرف","رياضيات","تاريخ/جغرافيا","فرنسية","انڨليزية"],
 "إعلامية":["خوارزميات","قواعد بيانات","إعلامية","رياضيات","فيزياء","انڨليزية"]}
 };
 
 let currentSub = "";
-let openedBranch=null;
+let openedBranch = null;
 
 function renderLevels(){
-  const levelContainer = document.getElementById("levelContainer");
-  levelContainer.innerHTML="";
+  const container = document.getElementById("levelContainer");
+  container.innerHTML="";
   Object.keys(levels).forEach(l=>{
-    const wrap=document.createElement("div");
-    wrap.className="level-wrapper";
-    const lvl=document.createElement("div");
-    lvl.className="level";
-    lvl.innerText=l;
-    const branches=document.createElement("div");
-    branches.className="branches";
-    branches.dataset.visible="false";
+    const wrap=document.createElement("div"); wrap.className="level-wrapper";
+    const lvl=document.createElement("div"); lvl.className="level"; lvl.innerText=l;
+    const branches=document.createElement("div"); branches.className="branches";
     const data=levels[l];
     if(typeof data==="object" && !Array.isArray(data)){
       Object.keys(data).forEach(b=>{
-        const br=document.createElement("div");
-        br.className="branch";
-        br.innerText=b;
+        const br=document.createElement("div"); br.className="branch"; br.innerText=b;
         br.onclick=()=>showSubjects(data[b],l+" - "+b);
         branches.appendChild(br);
       });
       lvl.onclick=()=>{
-        if(openedBranch && openedBranch!==branches){openedBranch.style.display="none"; openedBranch.dataset.visible="false";}
-        if(branches.dataset.visible==="true"){branches.style.display="none"; branches.dataset.visible="false"; openedBranch=null;}
-        else{branches.style.display="flex"; branches.dataset.visible="true"; openedBranch=branches;}
+        const isVisible = branches.style.display === "flex";
+        if(openedBranch) openedBranch.style.display="none";
+        branches.style.display = isVisible ? "none" : "flex";
+        openedBranch = isVisible ? null : branches;
       };
-    }else{lvl.onclick=()=>showSubjects(data,l,true);}
-    wrap.appendChild(lvl);
-    wrap.appendChild(branches);
-    levelContainer.appendChild(wrap);
+    } else {
+      lvl.onclick=()=>showSubjects(data,l);
+    }
+    wrap.appendChild(lvl); wrap.appendChild(branches); container.appendChild(wrap);
   });
 }
 
-function showSubjects(subs,title,small=false){
+function showSubjects(subs, title){
   document.getElementById("home").style.display="none";
   document.getElementById("subjectPage").style.display="block";
-  document.getElementById("subjectTitle").innerText=title;
+  document.getElementById("subjBanner").innerText=title;
   const list = document.getElementById("subjectList");
   list.innerHTML="";
-  list.className="subject-list"+(small?" small-subjects":"");
   subs.forEach(s=>{
-    const d=document.createElement("div");
-    d.innerText=s;
+    const d=document.createElement("div"); d.innerText=s;
     d.onclick=()=>{
-        currentSub = s;
-        document.getElementById("subjectPage").style.display="none";
-        document.getElementById("examPage").style.display="block";
-        document.getElementById("examTitle").innerText=s;
-        document.getElementById("examChoice").style.display="block";
-        document.getElementById("examResult").innerHTML="";
+      currentSub = s;
+      document.getElementById("subjectPage").style.display="none";
+      document.getElementById("examPage").style.display="block";
+      document.getElementById("examTitle").innerText=s;
+      document.getElementById("examChoice").style.display="block";
+      document.getElementById("examResult").innerHTML="";
     };
     list.appendChild(d);
   });
 }
 
 window.showTest = (type) => {
-    document.getElementById("examChoice").style.display = "none";
-    const res = document.getElementById("examResult");
-    const imgUrl = (examImages[currentSub] && examImages[currentSub][type]) ? examImages[currentSub][type] : "";
-    if(imgUrl) {
-        res.innerHTML = `<img src="${imgUrl}" class="exam-img">`;
-    } else {
-        res.innerHTML = `<div class="gray-box">لا توجد صورة متوفرة حالياً لـ ${currentSub}</div>`;
-    }
-}
+  document.getElementById("examChoice").style.display = "none";
+  document.getElementById("examResult").innerHTML = `<div class="gray-box">لا توجد صور متاحة لـ ${currentSub} (${type}) حالياً</div>`;
+};
 
-window.backLevel = () => { document.getElementById("subjectPage").style.display="none"; document.getElementById("home").style.display="block"; }
+window.backLevel = () => { document.getElementById("subjectPage").style.display="none"; document.getElementById("home").style.display="block"; };
 window.backToSubjects = () => {
-    if(document.getElementById("examChoice").style.display === "none") {
-        document.getElementById("examChoice").style.display = "block";
-        document.getElementById("examResult").innerHTML = "";
-    } else {
-        document.getElementById("examPage").style.display="none";
-        document.getElementById("subjectPage").style.display="block";
-    }
-}
+  if(document.getElementById("examChoice").style.display === "none") {
+    document.getElementById("examChoice").style.display = "block";
+    document.getElementById("examResult").innerHTML = "";
+  } else {
+    document.getElementById("examPage").style.display="none";
+    document.getElementById("subjectPage").style.display="block";
+  }
+};
 </script>
 </body>
 </html>
