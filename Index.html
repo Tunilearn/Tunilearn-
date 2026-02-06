@@ -21,8 +21,8 @@ input{width:100%;padding:10px;margin:6px 0;border-radius:10px;border:none;font-s
 #showPass{width:100%;background:#333;color:white;border:none;font-size:12px;padding:6px;border-radius:999px;margin-bottom:10px}
 .buttons{display:flex;justify-content:space-between}
 button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;color:white;font-weight:bold;cursor:pointer;font-size:14px}
-#forgot{width:65%;margin:6px auto;display:block;font-size:12px;background:#2196f3;padding:6px;border-radius:8px}
-#status{color:#ff5252;margin-top:8px;font-weight:bold;text-align:center}
+#forgot{width:65%;margin:6px auto;display:block;font-size:12px;background:#2196f3;padding:6px;border-radius:8px; border:none; color:white; cursor:pointer;}
+#status{color:#ff5252;margin-top:8px;font-weight:bold;text-align:center;font-size:13px; min-height: 20px;}
 
 /* HOME */
 #home{display:none;padding:8px;width:100%;max-width:360px;margin:0 auto;text-align:center;position:relative;min-height:100vh}
@@ -43,16 +43,15 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
 #subjectPage h1{position:absolute;top:5px;left:5px;color:white;font-size:16px;font-weight:bold;margin:0}
 .banner-subject{border:2px solid #1e90ff;background:#87cefa;color:black;padding:10px;border-radius:12px;font-weight:bold;margin-top:35px;font-size:13px}
 .subject-list div{border:2px solid red;padding:8px;margin:5px 0;border-radius:12px;font-weight:bold;cursor:pointer;font-size:13px}
-.small-subjects div{font-size:12px;padding:6px}
 .back{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px;font-weight:bold}
 
 /* EXAMS */
 #examPage{display:none;padding:6px;background:#111;color:white;width:100%;max-width:350px;margin:50px auto 0 auto;text-align:center;position:relative;min-height:90vh}
 #examPage h1{position:absolute;top:5px;left:5px;color:white;font-size:16px;font-weight:bold;margin:0}
 .exam-option{border:2px solid red;padding:12px;margin:6px 0;border-radius:12px;font-weight:bold;cursor:pointer;font-size:14px}
-.back-exam{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px;font-weight:bold}
 .exam-img { width: 100%; margin-top: 20px; border-radius: 10px; border: 1px solid #1e90ff; }
 .gray-box { width: 100%; height: 250px; background: #333; margin-top: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; border: 2px dashed #444; }
+.back-exam{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px;font-weight:bold}
 
 </style>
 </head>
@@ -70,7 +69,7 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
       <button id="signupBtn">Sign up</button>
       <button id="loginBtn">Log in</button>
     </div>
-    <button id="forgot" id="resetBtn">نسيت كلمة المرور</button>
+    <button id="forgot">نسيت كلمة المرور</button>
     <div id="status"></div>
   </div>
 </div>
@@ -116,32 +115,56 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // AUTH FUNCTIONS
+  const statusBox = document.getElementById('status');
+
+  // SIGN UP
   window.signup = async () => {
-    const e = email.value; const p = password.value;
+    const e = document.getElementById('email').value;
+    const p = document.getElementById('password').value;
+    if(!e || !p) { statusBox.innerText = "الرجاء إدخال البيانات"; return; }
+    
+    statusBox.innerText = "جاري التسجيل...";
     try {
       await createUserWithEmailAndPassword(auth, e, p);
-      status.innerText = "تم التسجيل! يمكنك الدخول";
-      status.style.color = "lime";
-    } catch (err) { status.innerText = "خطأ: " + err.message; }
+      statusBox.style.color = "lime";
+      statusBox.innerText = "تم التسجيل بنجاح! اضغط Log in";
+    } catch (err) {
+      statusBox.style.color = "#ff5252";
+      if(err.code === 'auth/email-already-in-use') statusBox.innerText = "هذا الحساب مسجل بالفعل";
+      else if(err.code === 'auth/weak-password') statusBox.innerText = "كلمة السر ضعيفة جداً";
+      else statusBox.innerText = "خطأ: " + err.message;
+    }
   };
 
+  // LOGIN
   window.login = async () => {
-    const e = email.value; const p = password.value;
+    const e = document.getElementById('email').value;
+    const p = document.getElementById('password').value;
+    if(!e || !p) { statusBox.innerText = "أدخل البريد وكلمة السر"; return; }
+
+    statusBox.innerText = "جاري التحقق...";
     try {
       await signInWithEmailAndPassword(auth, e, p);
       document.getElementById('auth').style.display = "none";
       document.getElementById('home').style.display = "block";
       renderLevels();
-    } catch (err) { status.innerText = "فشل الدخول: تحقق من البيانات"; }
+    } catch (err) {
+      statusBox.style.color = "#ff5252";
+      if(err.code === 'auth/invalid-credential') statusBox.innerText = "البريد أو كلمة السر خاطئة";
+      else if(err.code === 'auth/user-not-found') statusBox.innerText = "الحساب غير موجود";
+      else statusBox.innerText = "خطأ في الدخول";
+    }
   };
 
+  // RESET
   window.forgotPassword = async () => {
-    if(!email.value) { status.innerText="أدخل الايميل أولاً"; return; }
+    const e = document.getElementById('email').value;
+    if(!e) { statusBox.innerText="أدخل ايميلك أولاً"; return; }
     try {
-      await sendPasswordResetEmail(auth, email.value);
-      alert("تم ارسال رابط استعادة كلمة السر الى ايميلك");
-    } catch (err) { alert(err.message); }
+      await sendPasswordResetEmail(auth, e);
+      statusBox.style.color = "lime";
+      statusBox.innerText = "تم إرسال رابط الاستعادة إلى بريدك";
+    } catch (err) { statusBox.innerText = "خطأ في الإرسال"; }
   };
 
   document.getElementById('signupBtn').onclick = signup;
@@ -150,7 +173,7 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
 </script>
 
 <script>
-// DATA & NAVIGATION
+// UI DATA
 const levels={
 "7 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
 "8 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
@@ -161,7 +184,6 @@ const levels={
 "4 ثانوي":{"آداب":["عربية","فرنسية","انڨليزية","تاريخ","جغرافيا","تربية اسلامية","تربية مدنية","اعلامية","فلسفة"], "علوم":["عربية","فرنسية","انڨليزية","تاريخ","جغرافيا","علوم فزيائية","علوم الحياة و الارض","تكنولوجيا","اعلامية"]}
 };
 
-// Exam Images Mock (Add your real links here)
 const examData = {
   "رياضيات": { "مراقبة": "https://via.placeholder.com/400x600?text=Math+Test", "تأليفية": "" },
 };
@@ -195,34 +217,36 @@ function renderLevels(){
 }
 
 function showSubjects(subs,title,small=false){
-  home.style.display="none"; subjectPage.style.display="block";
-  subjectTitle.innerText=title;
-  subjectList.innerHTML="";
+  document.getElementById('home').style.display="none"; 
+  document.getElementById('subjectPage').style.display="block";
+  document.getElementById('subjectTitle').innerText=title;
+  const list = document.getElementById('subjectList');
+  list.innerHTML="";
   subs.forEach(s=>{
     const d=document.createElement("div"); d.innerText=s;
-    d.onclick=()=>{ currentSub=s; subjectPage.style.display="none"; examPage.style.display="block"; examTitle.innerText=s; examChoice.style.display="block"; examContent.innerHTML=""; };
-    subjectList.appendChild(d);
+    d.onclick=()=>{ currentSub=s; document.getElementById('subjectPage').style.display="none"; document.getElementById('examPage').style.display="block"; document.getElementById('examTitle').innerText=s; document.getElementById('examChoice').style.display="block"; document.getElementById('examContent').innerHTML=""; };
+    list.appendChild(d);
   });
 }
 
-function showTest(type) {
-  examChoice.style.display = "none";
+window.showTest = (type) => {
+  document.getElementById('examChoice').style.display = "none";
   const imgUrl = (examData[currentSub] && examData[currentSub][type]) ? examData[currentSub][type] : "";
   if(imgUrl) {
-    examContent.innerHTML = `<img src="${imgUrl}" class="exam-img">`;
+    document.getElementById('examContent').innerHTML = `<img src="${imgUrl}" class="exam-img">`;
   } else {
-    examContent.innerHTML = `<div class="gray-box">لا توجد صورة متوفرة حالياً لهذه المادة</div>`;
+    document.getElementById('examContent').innerHTML = `<div class="gray-box">لا توجد صورة متوفرة حالياً لهذه المادة</div>`;
   }
-}
+};
 
-function backLevel(){subjectPage.style.display="none";home.style.display="block"}
-function backToSubjects(){
-  if(examChoice.style.display === "none") {
-    examContent.innerHTML = ""; examChoice.style.display = "block";
+window.backLevel = () => { document.getElementById('subjectPage').style.display="none"; document.getElementById('home').style.display="block"; };
+window.backToSubjects = () => {
+  if(document.getElementById('examChoice').style.display === "none") {
+    document.getElementById('examContent').innerHTML = ""; document.getElementById('examChoice').style.display = "block";
   } else {
-    examPage.style.display="none"; subjectPage.style.display="block";
+    document.getElementById('examPage').style.display="none"; document.getElementById('subjectPage').style.display="block";
   }
-}
+};
 </script>
 </body>
 </html>
