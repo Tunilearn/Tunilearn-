@@ -8,10 +8,10 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
 html,body{width:100%;height:100%}
-body{background:#111;color:#1e90ff;display:flex;justify-content:center;align-items:center;overflow-x:hidden}
+body{background:#111;color:#1e90ff;display:flex;justify-content:center;align-items:center;flex-direction:column;overflow-x:hidden}
 
 /* AUTH */
-#auth{position:fixed;top:0;left:0;width:100%;height:100vh;background:#111;display:flex;justify-content:center;align-items:center;z-index:1000}
+#auth{display:flex;justify-content:center;align-items:center;width:100%;height:100vh;background:#111;position:fixed;top:0;left:0;z-index:1000}
 .phone{width:90%;max-width:360px;background:#1a1a1a;padding:20px;border-radius:20px;text-align:center}
 .phone h1{color:white;font-size:22px}
 .dot{color:red}
@@ -22,7 +22,7 @@ input{width:100%;padding:10px;margin:6px 0;border-radius:10px;border:none}
 .buttons{display:flex;justify-content:space-between}
 button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;color:white;font-weight:bold;cursor:pointer}
 #forgot{width:65%;margin:6px auto;background:#2196f3;padding:6px;border-radius:8px;border:none;color:white}
-#status{margin-top:8px;font-weight:bold;font-size:13px;min-height:18px}
+#status{margin-top:8px;font-weight:bold;font-size:13px}
 
 /* HOME */
 #home{display:none;width:100%;max-width:360px;min-height:100vh;padding:8px;position:relative;text-align:center}
@@ -49,96 +49,53 @@ button{width:48%;padding:10px;border:none;border-radius:12px;background:#e53935;
 #examPage{display:none;background:#111;color:white;min-height:100vh;width:100%;max-width:360px;padding:6px;margin-top:40px;position:relative;text-align:center}
 #examPage h1{position:absolute;top:5px;left:5px;font-size:16px}
 .exam-option{border:2px solid red;padding:12px;margin:6px 0;border-radius:12px;font-weight:bold;cursor:pointer}
-.gray-box{margin-top:20px;height:240px;background:#333;border-radius:10px;border:2px dashed #444;display:flex;align-items:center;justify-content:center;color:#777}
 .back-exam{position:fixed;bottom:12px;left:12px;border:2px solid green;background:none;color:white;padding:8px;border-radius:10px}
 </style>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-
-const firebaseConfig={
-apiKey:"AIzaSyCXzhUgYy1MMvnftDi1d5XFeRJTFa35eQU",
-authDomain:"tunilearn-e4b8e.firebaseapp.com",
-projectId:"tunilearn-e4b8e",
-storageBucket:"tunilearn-e4b8e.appspot.com",
-messagingSenderId:"730477107505",
-appId:"1:730477107505:web:eee97b8ef099326b8cf810"
-};
-
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const sBox=document.getElementById("status");
-
-window.signup=async()=>{
-const e=email.value,p=password.value;
-if(!e||!p){sBox.innerText="أدخل البيانات";return;}
-try{
-await createUserWithEmailAndPassword(auth,e,p);
-sBox.innerText="تم التسجيل بنجاح";sBox.style.color="lime";
-}catch(err){sBox.innerText="خطأ في التسجيل";sBox.style.color="red";}
-};
-
-window.login=async()=>{
-try{
-await signInWithEmailAndPassword(auth,email.value,password.value);
-authDiv.style.display="none";
-home.style.display="block";
-renderLevels();
-}catch{ sBox.innerText="بيانات خاطئة"; }
-};
-
-window.forgotPassword=async()=>{
-if(!email.value)return;
-await sendPasswordResetEmail(auth,email.value);
-sBox.innerText="تم إرسال رابط الاسترجاع";
-};
-</script>
 </head>
 
 <body>
 
 <div id="auth">
-<div class="phone">
-<h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-<p class="top-text">المنصة التونسية للفروض والامتحانات</p>
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button id="showPass" onclick="password.type=password.type==='password'?'text':'password'">Show password</button>
-<div class="buttons">
-<button onclick="signup()">Sign up</button>
-<button onclick="login()">Log in</button>
-</div>
-<button id="forgot" onclick="forgotPassword()">نسيت كلمة المرور</button>
-<div id="status"></div>
-</div>
+  <div class="phone">
+    <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+    <p class="top-text">المنصة التونسية للفروض والامتحانات</p>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button id="showPass" onclick="password.type=password.type==='password'?'text':'password'">Show password</button>
+    <div class="buttons">
+      <button onclick="signup()">Sign up</button>
+      <button onclick="login()">Log in</button>
+    </div>
+    <button id="forgot" onclick="forgotPassword()">نسيت كلمة المرور</button>
+    <div id="status"></div>
+  </div>
 </div>
 
 <div id="home">
-<h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-<div class="banner">جميع الفروض والامتحانات حسب المستويات و الشعب</div>
-<div class="level-container" id="levelContainer"></div>
+  <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+  <div class="banner">جميع الفروض والامتحانات حسب المستويات و الشعب</div>
+  <div class="level-container" id="levelContainer"></div>
 </div>
 
 <div id="subjectPage">
-<h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-<div class="banner-subject" id="subjBanner"></div>
-<div class="subject-list" id="subjectList"></div>
-<button class="back" onclick="backLevel()">Back</button>
+  <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+  <div class="banner-subject" id="subjBanner"></div>
+  <div class="subject-list" id="subjectList"></div>
+  <button class="back" onclick="backLevel()">Back</button>
 </div>
 
 <div id="examPage">
-<h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
-<h2 id="examTitle" style="margin-top:20px;color:#87cefa"></h2>
-<div id="examChoice">
-<div class="exam-option" onclick="showTest('مراقبة')">فروض مراقبة</div>
-<div class="exam-option" onclick="showTest('تأليفية')">فروض تأليفية</div>
-</div>
-<div id="examResult"></div>
-<button class="back-exam" onclick="backToSubjects()">Back</button>
+  <h1>Tuni<span class="dot">•</span><span class="tuni">Learn</span></h1>
+  <h2 id="examTitle" style="margin-top:20px;color:#87cefa"></h2>
+  <div class="exam-option">فروض مراقبة</div>
+  <div class="exam-option">فروض تأليفية</div>
+  <button class="back-exam" onclick="backToSubjects()">Back</button>
 </div>
 
 <script>
+let users=JSON.parse(localStorage.getItem("users")||"[]");
+let logged=localStorage.getItem("logged")||"";
+
 const levels={
 "7 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
 "8 أساسي":["عربية","فرنسية","انڨليزية","رياضيات","علوم","تربية اسلامية","تربية مدنية","اعلامية","فيزياء","تكنولوجيا","تاريخ","جغرافيا"],
@@ -165,7 +122,31 @@ const levels={
 "اعلامية":["خوارزميات","قواعد بيانات","اعلامية","رياضيات","علوم فزيائية","انڨليزية"]}
 };
 
-let openedBranch=null,currentSub="";
+function signup(){
+const e=email.value,p=password.value;
+if(!e||!p){status.innerText="أدخل البيانات";return;}
+if(users.find(u=>u.email===e)){status.innerText="الحساب موجود";return;}
+users.push({email:e,password:p});
+localStorage.setItem("users",JSON.stringify(users));
+status.innerText="تم التسجيل";
+}
+
+function login(){
+const u=users.find(x=>x.email===email.value);
+if(!u||u.password!==password.value){status.innerText="خطأ";return;}
+localStorage.setItem("logged",u.email);
+auth.style.display="none";
+home.style.display="block";
+renderLevels();
+}
+
+function forgotPassword(){
+const u=users.find(x=>x.email===email.value);
+if(!u){status.innerText="غير موجود";return;}
+alert(u.password);
+}
+
+let openedBranch=null;
 
 function renderLevels(){
 levelContainer.innerHTML="";
@@ -204,28 +185,15 @@ subjectList.innerHTML="";
 subs.forEach(s=>{
 const d=document.createElement("div");
 d.innerText=s;
-d.onclick=()=>{
-currentSub=s;
-subjectPage.style.display="none";
-examPage.style.display="block";
-examTitle.innerText=s;
-examChoice.style.display="block";
-examResult.innerHTML="";
-};
+d.onclick=()=>{subjectPage.style.display="none";examPage.style.display="block";examTitle.innerText=s};
 subjectList.appendChild(d);
 });
 }
 
-function showTest(type){
-examChoice.style.display="none";
-examResult.innerHTML=`<div class="gray-box">لا توجد ملفات لـ ${currentSub} (${type})</div>`;
-}
-
 function backLevel(){subjectPage.style.display="none";home.style.display="block"}
-function backToSubjects(){
-if(examChoice.style.display==="none"){examChoice.style.display="block";examResult.innerHTML="";}
-else{examPage.style.display="none";subjectPage.style.display="block";}
-}
+function backToSubjects(){examPage.style.display="none";subjectPage.style.display="block"}
+
+if(logged){auth.style.display="none";home.style.display="block";renderLevels();}
 </script>
 
 </body>
